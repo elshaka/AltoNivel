@@ -20,7 +20,6 @@ public:
         void setNombre(QString nombre);
         void setApellido(QString apellido);
         void setCedula(QString cedula);
-        bool operator==(Cliente cliente);
         ~Cliente();
 };
 

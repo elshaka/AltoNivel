@@ -51,9 +51,4 @@ unsigned int Cliente::getId()
     return this->id;
 }
 
-bool Cliente::operator ==(Cliente cliente)
-{
-    return this->id == cliente.getId();
-}
-
 Cliente::~Cliente() {}
