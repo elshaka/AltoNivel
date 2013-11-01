@@ -50,7 +50,7 @@ bool DB::create(Cliente cliente)
 {
     QSqlQuery q;
     qDebug() << "Crear cliente";
-    q = this->excecute("INSERT into clientes (nombre, apellido, cedula) values ('" + cliente.getNombre() + "','" +
+    q = this->excecute("INSERT INTO clientes (nombre, apellido, cedula) values ('" + cliente.getNombre() + "','" +
                                                                                      cliente.getApellido() + "','" +
                                                                                      cliente.getCedula() + "')");
     return true;
@@ -80,7 +80,7 @@ QList<Cliente> DB::find_all()
     QSqlQuery q;
     QList<Cliente> clientes;
     qDebug() << "Cargar clientes";
-    q = this->excecute("SELECT id, nombre, apellido, cedula FROM clientes" );
+    q = this->excecute("SELECT id, nombre, apellido, cedula FROM clientes ORDER BY id" );
     while (q.next())
     {
         clientes.append(Cliente(q.value(1).toString().trimmed(),
