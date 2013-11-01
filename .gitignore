@@ -1,0 +1,41 @@
+# Compiled object files
+*.o
+
+# Generated MOC, resource and UI files
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# Debug and Release directories (created under Windows, not Linux)
+Debug/
+Release/
+
+# QtCreator project files
+*.pro.user
+*.pro.user*
+
+# .log files (usually created by QtTest - thanks to VestniK)
+*.log
+
+# Built windows .exe and linux binaries
+*.exe
+*.dll
+AltoNivel
+
+# Windows-specific files
+Thumbs.db
+desktop.ini
+
+# Mac-specific things (thanks to Michael Aaron Safyan)
+.DS_Store
+
+# Editors temporary files 
+*~
+
+# Failed patch
+*.orig
+*.rej
+
+# Makefiles
+Makefile
+Makefile.*
