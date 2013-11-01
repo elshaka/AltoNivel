@@ -11,16 +11,16 @@ class Cliente
     QString cedula;
 
 public:
-        Cliente();
-        Cliente(QString nombre, QString apellido, QString cedula, unsigned int id = 0);
-        QString getNombre();
-        QString getApellido();
-        QString getCedula();
-        unsigned int getId();
-        void setNombre(QString nombre);
-        void setApellido(QString apellido);
-        void setCedula(QString cedula);
-        ~Cliente();
+    Cliente();
+    Cliente(QString nombre, QString apellido, QString cedula, unsigned int id = 0);
+    QString getNombre();
+    QString getApellido();
+    QString getCedula();
+    unsigned int getId();
+    void setNombre(QString nombre);
+    void setApellido(QString apellido);
+    void setCedula(QString cedula);
+    ~Cliente();
 };
 
 #endif // CLIENTE_H
