@@ -21,8 +21,8 @@ QSqlError DB::addConnection(const QString &driver, const QString &dbName, const 
             err = db.lastError();
             db = QSqlDatabase();
             QSqlDatabase::removeDatabase(QString("conexion").arg(cCount));
+            qDebug() << "Error al intentar conectar con el servidor " + host;
         }
-        else qDebug() << "Error al intentar conectar con el servidor " + host;
     }
     else db = QSqlDatabase::database("conexion", true);
     return err;
