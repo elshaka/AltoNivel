@@ -125,7 +125,9 @@ void GestionarClientes::on_actionEliminar_triggered()
     if (QMessageBox::question(this, "Eliminar cliente", "¿Esta seguro de querer eliminar al cliente "+cliente.getNombre()+"?")
             == QMessageBox::Yes)
     {
-        this->db->eliminarCliente(cliente);
-        this->actualizarTablaClientes();
+        if (this->db->eliminarCliente(cliente))
+            this->actualizarTablaClientes();
+        else
+            QMessageBox::warning(this, "No se puede eliminar el cliente", "El cliente no se puede eliminar porque tiene facturas asociadas");
     }
 }

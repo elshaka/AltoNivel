@@ -82,12 +82,15 @@ bool DB::eliminarCliente(Cliente cliente)
     QSqlQuery q;
     bool destroyed = false;
     qDebug() << "Eliminar cliente";
-    q = this->excecute("SELECT id FROM clientes WHERE id = " + QString::number(cliente.getId()));
-    if (q.size() > 0)
+    q = this->excecute("SELECT COUNT(*) FROM facturas WHERE cliente_id = " + QString::number(cliente.getId()));
+    q.next();
+    if (q.value(0).toInt() == 0)
     {
         q = this->excecute("DELETE FROM clientes WHERE id = " + QString::number(cliente.getId()));
         destroyed = true;
     }
+    else
+        qDebug() << "No se puede eliminar el cliente porque tiene facturas asociadas";
     return destroyed;
 }
 
