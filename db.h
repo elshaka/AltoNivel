@@ -20,11 +20,10 @@ public:
     QSqlQuery excecute(QString sql);
     void setDatabase(QSqlDatabase db);
     QSqlDatabase getDatabase();
-
-    bool create(Cliente cliente);
-    bool update(Cliente cliente);
-    bool destroy(Cliente cliente);
-    QList<Cliente> find_all();
+    QList<QString> crearCliente(Cliente cliente);
+    QList<QString> actualizarCliente(Cliente cliente);
+    bool eliminarCliente(Cliente cliente);
+    QList<Cliente> obtenerClientes();
 };
 
 #endif // DB_H

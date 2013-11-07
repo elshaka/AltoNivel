@@ -2,6 +2,7 @@
 #define CLIENTE_H
 
 #include <QString>
+#include <QList>
 
 class Cliente
 {
@@ -9,17 +10,24 @@ class Cliente
     QString nombre;
     QString apellido;
     QString cedula;
+    QString direccion;
+    QString telefono;
 
 public:
     Cliente();
-    Cliente(QString nombre, QString apellido, QString cedula, unsigned int id = 0);
+    Cliente(QString nombre, QString apellido, QString cedula, QString direccion, QString telefono, unsigned int id = 0);
     QString getNombre();
     QString getApellido();
     QString getCedula();
+    QString getDireccion();
+    QString getTelefono();
     unsigned int getId();
     void setNombre(QString nombre);
     void setApellido(QString apellido);
     void setCedula(QString cedula);
+    void setDireccion(QString direccion);
+    void setTelefono(QString telefono);
+    QList<QString> validar();
     ~Cliente();
 };
 

@@ -45,47 +45,68 @@ QSqlDatabase DB::getDatabase()
     return db;
 }
 
-bool DB::create(Cliente cliente)
+QList<QString> DB::crearCliente(Cliente cliente)
 {
     QSqlQuery q;
-    qDebug() << "Crear cliente";
-    q = this->excecute("INSERT INTO clientes (nombre, apellido, cedula) values ('" + cliente.getNombre() + "','" +
-                                                                                     cliente.getApellido() + "','" +
-                                                                                     cliente.getCedula() + "')");
-    return true;
+    QList<QString> errores = cliente.validar();
+    if (errores.size() == 0)
+    {
+        qDebug() << "Crear cliente";
+        q = this->excecute("INSERT INTO clientes (nombre, apellido, cedula, direccion, telefono) values ('" +
+                            cliente.getNombre() + "','" +
+                            cliente.getApellido() + "','" +
+                            cliente.getCedula() + "','" +
+                            cliente.getDireccion() + "','" +
+                            cliente.getTelefono() + "')");
+    }
+    return errores;
 }
 
-bool DB::update(Cliente cliente)
+QList<QString> DB::actualizarCliente(Cliente cliente)
 {
     QSqlQuery q;
-    qDebug() << "Crear cliente";
-    q = this->excecute("UPDATE clientes SET nombre = '" + cliente.getNombre() + "', " +
-                                         "apellido = '" + cliente.getApellido() + "', " +
-                                         "cedula = '" + cliente.getCedula() + "'" +
-                                         " WHERE id = " + QString::number(cliente.getId()));
-    return true;
+    QList<QString> errores = cliente.validar();
+    if (errores.size() == 0)
+    {
+        qDebug() << "Crear cliente";
+        q = this->excecute("UPDATE clientes SET nombre = '" + cliente.getNombre() + "', " +
+                                             "apellido = '" + cliente.getApellido() + "', " +
+                                               "cedula = '" + cliente.getCedula() + "'" +
+                                            "direccion = '" + cliente.getDireccion() + "'" +
+                                             "telefono = '" + cliente.getTelefono() + "'" +
+                                            " WHERE id = " + QString::number(cliente.getId()));
+    }
+    return errores;
 }
 
-bool DB::destroy(Cliente cliente)
+bool DB::eliminarCliente(Cliente cliente)
 {
     QSqlQuery q;
+    bool destroyed = false;
     qDebug() << "Eliminar cliente";
-    q = this->excecute("DELETE FROM clientes WHERE id = " + QString::number(cliente.getId()));
-    return true;
+    q = this->excecute("SELECT COUNT(*) FROM clientes WHERE id = " + QString::number(cliente.getId()));
+    if (q.value(0).toInt() > 0)
+    {
+        q = this->excecute("DELETE FROM clientes WHERE id = " + QString::number(cliente.getId()));
+        destroyed = true;
+    }
+    return destroyed;
 }
 
-QList<Cliente> DB::find_all()
+QList<Cliente> DB::obtenerClientes()
 {
     QSqlQuery q;
     QList<Cliente> clientes;
     qDebug() << "Cargar clientes";
-    q = this->excecute("SELECT id, nombre, apellido, cedula FROM clientes ORDER BY id" );
+    q = this->excecute("SELECT id, nombre, apellido, cedula, direccion, telefono FROM clientes ORDER BY id" );
     while (q.next())
     {
-        clientes.append(Cliente(q.value(1).toString().trimmed(),
-                                q.value(2).toString().trimmed(),
-                                q.value(3).toString().trimmed(),
-                                q.value(0).toInt()));
+        clientes << (Cliente(q.value(1).toString(),
+                             q.value(2).toString(),
+                             q.value(3).toString(),
+                             q.value(5).toString(),
+                             q.value(6).toString(),
+                             q.value(0).toInt()));
     }
     return clientes;
 }
