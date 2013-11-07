@@ -16,23 +16,13 @@ class MainWindow : public QMainWindow
     
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void actualizarListaClientes();
-    void habilitarEditarEliminar();
-    void deshabilitarEditarEliminar();
     ~MainWindow();
     
 private slots:
-    void on_listWidget_clicked();
 
-    void on_actionNuevo_triggered();
-
-    void on_actionEditar_triggered();
-
-    void on_actionEliminar_triggered();
 
 private:
     Ui::MainWindow *ui;
-    QList<Cliente> clientes;
     DB db;
 };
 

@@ -6,76 +6,215 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>524</width>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Clientes</string>
+   <string>Sistema de Facturación - Nueva factura</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Nueva factura</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QFormLayout" name="formLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Número</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="numeroLineEdit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Autogenerado</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Cliente</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLineEdit" name="clienteLineEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="seleccionarClientePushButton">
+             <property name="text">
+              <string>Seleccionar cliente</string>
+             </property>
+             <property name="icon">
+              <iconset theme="find"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Tipo</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="tipoComboBox"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="venceLabel">
+           <property name="text">
+            <string>Vence</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDateEdit" name="venceDateEdit">
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="displayFormat">
+            <string>dddd d 'de' MMMM 'de' yyyy</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Monto</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="montoLineEdit"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Abono</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="abonoLineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="crearFacturaPushButton">
+           <property name="text">
+            <string>Crear factura</string>
+           </property>
+           <property name="icon">
+            <iconset theme="filenew"/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::AllToolBarAreas</set>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNuevo"/>
-   <addaction name="actionEditar"/>
+   <addaction name="actionVer_facturas_en_sistema"/>
    <addaction name="separator"/>
-   <addaction name="actionEliminar"/>
+   <addaction name="actionGestionarClientes"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNuevo">
-   <property name="text">
-    <string>Nuevo cliente</string>
+  <action name="actionGestionarClientes">
+   <property name="icon">
+    <iconset theme="edit-find-replace"/>
    </property>
-   <property name="iconText">
-    <string>Nuevo</string>
+   <property name="text">
+    <string>Gestionar clientes</string>
    </property>
    <property name="toolTip">
-    <string>Nuevo cliente</string>
+    <string>Crear, actualizar o eliminar clientes</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N</string>
+    <string>Ctrl+X</string>
    </property>
   </action>
-  <action name="actionEditar">
-   <property name="enabled">
-    <bool>false</bool>
+  <action name="actionVer_facturas_en_sistema">
+   <property name="icon">
+    <iconset theme="document-open"/>
    </property>
    <property name="text">
-    <string>Editar</string>
-   </property>
-   <property name="iconText">
-    <string>Editar</string>
-   </property>
-   <property name="toolTip">
-    <string>Editar cliente</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+E</string>
-   </property>
-  </action>
-  <action name="actionEliminar">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Eliminar</string>
-   </property>
-   <property name="toolTip">
-    <string>Eliminar cliente</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string>Ver facturas en sistema</string>
    </property>
   </action>
  </widget>
