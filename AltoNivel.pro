@@ -12,11 +12,14 @@ SOURCES += main.cpp \
     cliente.cpp \
     clienteform.cpp \
     db.cpp \
-    factura.cpp
+    factura.cpp \
+    gestionarclientes.cpp
 HEADERS += mainwindow.h \
     cliente.h \
     clienteform.h \
     db.h \
-    factura.h
+    factura.h \
+    gestionarclientes.h
 FORMS += mainwindow.ui \
-    clienteform.ui
+    clienteform.ui \
+    gestionarclientes.ui

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "cliente.h"
+#include "db.h"
 
 namespace Ui {
 class ClienteForm;

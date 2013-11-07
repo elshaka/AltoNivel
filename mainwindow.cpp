@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "clienteform.h"
+#include "gestionarclientes.h"
 #include <QMessageBox>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,4 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_actionGestionarClientes_triggered()
+{
+    GestionarClientes* gestionarClientes = new GestionarClientes(&this->db, this);
+    gestionarClientes->show();
 }

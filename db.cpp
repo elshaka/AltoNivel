@@ -2,7 +2,7 @@
 
 DB::DB()
 {
-    this->addConnection("QPSQL","alto_nivel","localhost","postgres","ucla",5432);
+    this->addConnection("QPSQL", "alto_nivel", "localhost", "postgres", "ucla", 5432);
 }
 
 QSqlError DB::addConnection(const QString &driver, const QString &dbName, const QString &host,
@@ -51,12 +51,12 @@ QList<QString> DB::crearCliente(Cliente cliente)
     if (cliente.valido())
     {
         qDebug() << "Crear cliente";
-        q = this->excecute("INSERT INTO clientes (nombre, apellido, cedula, direccion, telefono) values ('" +
+        q = this->excecute("INSERT INTO clientes (nombre, apellido, cedula, telefono, direccion) values ('" +
                             cliente.getNombre() + "','" +
                             cliente.getApellido() + "','" +
                             cliente.getCedula() + "','" +
-                            cliente.getDireccion() + "','" +
-                            cliente.getTelefono() + "')");
+                            cliente.getTelefono() + "','" +
+                            cliente.getDireccion() + "')");
     }
     return cliente.errores;
 }
@@ -69,9 +69,9 @@ QList<QString> DB::actualizarCliente(Cliente cliente)
         qDebug() << "Crear cliente";
         q = this->excecute("UPDATE clientes SET nombre = '" + cliente.getNombre() + "', " +
                                              "apellido = '" + cliente.getApellido() + "', " +
-                                               "cedula = '" + cliente.getCedula() + "'" +
+                                               "cedula = '" + cliente.getCedula() + "', " +
+                                             "telefono = '" + cliente.getTelefono() + "', " +
                                             "direccion = '" + cliente.getDireccion() + "'" +
-                                             "telefono = '" + cliente.getTelefono() + "'" +
                                             " WHERE id = " + QString::number(cliente.getId()));
     }
     return cliente.errores;
@@ -82,8 +82,8 @@ bool DB::eliminarCliente(Cliente cliente)
     QSqlQuery q;
     bool destroyed = false;
     qDebug() << "Eliminar cliente";
-    q = this->excecute("SELECT COUNT(*) FROM clientes WHERE id = " + QString::number(cliente.getId()));
-    if (q.value(0).toInt() > 0)
+    q = this->excecute("SELECT id FROM clientes WHERE id = " + QString::number(cliente.getId()));
+    if (q.size() > 0)
     {
         q = this->excecute("DELETE FROM clientes WHERE id = " + QString::number(cliente.getId()));
         destroyed = true;
@@ -96,14 +96,14 @@ QList<Cliente> DB::obtenerClientes()
     QSqlQuery q;
     QList<Cliente> clientes;
     qDebug() << "Cargar clientes";
-    q = this->excecute("SELECT id, nombre, apellido, cedula, direccion, telefono FROM clientes ORDER BY id" );
+    q = this->excecute("SELECT id, nombre, apellido, cedula, telefono, direccion FROM clientes ORDER BY id" );
     while (q.next())
     {
         clientes << (Cliente(q.value(1).toString(),
                              q.value(2).toString(),
                              q.value(3).toString(),
+                             q.value(4).toString(),
                              q.value(5).toString(),
-                             q.value(6).toString(),
                              q.value(0).toInt()));
     }
     return clientes;

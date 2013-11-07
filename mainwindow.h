@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QList>
+#include <QDebug>
 #include "cliente.h"
 #include "db.h"
 
@@ -20,6 +21,8 @@ public:
     
 private slots:
 
+
+    void on_actionGestionarClientes_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -8,7 +8,7 @@ Cliente::Cliente()
     this->id = 0;
 }
 
-Cliente::Cliente(QString nombre, QString apellido, QString cedula, QString direccion, QString telefono, unsigned int id)
+Cliente::Cliente(QString nombre, QString apellido, QString cedula, QString telefono, QString direccion, unsigned int id)
 {
     this->nombre = nombre;
     this->apellido = apellido;
