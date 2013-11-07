@@ -55,7 +55,9 @@ CREATE TABLE clientes (
     id integer NOT NULL,
     nombre character varying(50) NOT NULL,
     apellido character varying(50) NOT NULL,
-    cedula character varying(50) NOT NULL
+    cedula character varying(50) NOT NULL,
+    direccion character varying(200) NOT NULL,
+    telefono character varying(20) NOT NULL
 );
 
 
@@ -83,10 +85,85 @@ ALTER SEQUENCE clientes_id_seq OWNED BY clientes.id;
 
 
 --
+-- Name: facturas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE facturas (
+    id integer NOT NULL,
+    cliente_id integer NOT NULL,
+    tipo character varying(10),
+    numero integer NOT NULL,
+    fecha_emision timestamp without time zone NOT NULL,
+    fecha_vencimiento timestamp without time zone,
+    monto real NOT NULL,
+    saldo_pendiente real,
+    estado character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.facturas OWNER TO postgres;
+
+--
+-- Name: facturas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE facturas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.facturas_id_seq OWNER TO postgres;
+
+--
+-- Name: facturas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE facturas_id_seq OWNED BY facturas.id;
+
+
+--
+-- Name: facturas_numero_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE facturas_numero_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.facturas_numero_seq OWNER TO postgres;
+
+--
+-- Name: facturas_numero_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE facturas_numero_seq OWNED BY facturas.numero;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY clientes ALTER COLUMN id SET DEFAULT nextval('clientes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY facturas ALTER COLUMN id SET DEFAULT nextval('facturas_id_seq'::regclass);
+
+
+--
+-- Name: numero; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY facturas ALTER COLUMN numero SET DEFAULT nextval('facturas_numero_seq'::regclass);
 
 
 --
@@ -95,6 +172,22 @@ ALTER TABLE ONLY clientes ALTER COLUMN id SET DEFAULT nextval('clientes_id_seq':
 
 ALTER TABLE ONLY clientes
     ADD CONSTRAINT pk_clientes PRIMARY KEY (id);
+
+
+--
+-- Name: pk_facturas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY facturas
+    ADD CONSTRAINT pk_facturas PRIMARY KEY (id);
+
+
+--
+-- Name: fk_clientes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY facturas
+    ADD CONSTRAINT fk_clientes FOREIGN KEY (cliente_id) REFERENCES clientes(id);
 
 
 --
