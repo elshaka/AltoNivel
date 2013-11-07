@@ -27,7 +27,8 @@ public:
     void setCedula(QString cedula);
     void setDireccion(QString direccion);
     void setTelefono(QString telefono);
-    QList<QString> validar();
+    bool valido();
+    QList<QString> errores;
     ~Cliente();
 };
 

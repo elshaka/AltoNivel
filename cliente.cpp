@@ -73,11 +73,11 @@ unsigned int Cliente::getId()
     return this->id;
 }
 
-QList<QString> Cliente::validar()
+bool Cliente::valido()
 {
-    QList<QString> errores;
+    this->errores.clear();
     // Agregar validaciones
-    return errores;
+    return this->errores.size() == 0;
 }
 
 Cliente::~Cliente() {}

@@ -48,8 +48,7 @@ QSqlDatabase DB::getDatabase()
 QList<QString> DB::crearCliente(Cliente cliente)
 {
     QSqlQuery q;
-    QList<QString> errores = cliente.validar();
-    if (errores.size() == 0)
+    if (cliente.valido())
     {
         qDebug() << "Crear cliente";
         q = this->excecute("INSERT INTO clientes (nombre, apellido, cedula, direccion, telefono) values ('" +
@@ -59,14 +58,13 @@ QList<QString> DB::crearCliente(Cliente cliente)
                             cliente.getDireccion() + "','" +
                             cliente.getTelefono() + "')");
     }
-    return errores;
+    return cliente.errores;
 }
 
 QList<QString> DB::actualizarCliente(Cliente cliente)
 {
     QSqlQuery q;
-    QList<QString> errores = cliente.validar();
-    if (errores.size() == 0)
+    if (cliente.valido())
     {
         qDebug() << "Crear cliente";
         q = this->excecute("UPDATE clientes SET nombre = '" + cliente.getNombre() + "', " +
@@ -76,7 +74,7 @@ QList<QString> DB::actualizarCliente(Cliente cliente)
                                              "telefono = '" + cliente.getTelefono() + "'" +
                                             " WHERE id = " + QString::number(cliente.getId()));
     }
-    return errores;
+    return cliente.errores;
 }
 
 bool DB::eliminarCliente(Cliente cliente)
