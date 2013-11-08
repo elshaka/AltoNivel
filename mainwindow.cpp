@@ -14,6 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
     this->timer = new QTimer(this);
     this->connect(this->timer, SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
     this->timer->start(1000);
+    this->ui->abonoLabel->setVisible(false);
+    this->ui->abonoLineEdit->setVisible(false);
+    this->ui->venceLabel->setVisible(false);
+    this->ui->venceDateEdit->setVisible(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -29,7 +34,7 @@ void MainWindow::on_actionGestionarClientes_triggered()
 
 void MainWindow::on_tipoComboBox_currentIndexChanged(const QString &arg1)
 {
-    bool visible = arg1 == "Credito";
+    bool visible = arg1 == "Crédito";
     this->ui->abonoLabel->setVisible(visible);
     this->ui->abonoLineEdit->setVisible(visible);
     this->ui->venceLabel->setVisible(visible);
