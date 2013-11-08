@@ -5,6 +5,8 @@ Cliente::Cliente()
     this->nombre = "";
     this->apellido = "";
     this->cedula = "";
+    this->telefono = "";
+    this->direccion = "";
     this->id = 0;
 }
 

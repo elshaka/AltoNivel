@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QList>
 #include <QDebug>
+#include <QTimer>
 #include "cliente.h"
 #include "db.h"
 
@@ -24,9 +25,16 @@ private slots:
 
     void on_actionGestionarClientes_triggered();
 
+    void on_tipoComboBox_currentIndexChanged(const QString &arg1);
+
+    void on_seleccionarClientePushButton_clicked();
+
+    void on_timer_timeout();
+
 private:
     Ui::MainWindow *ui;
     DB db;
+    QTimer *timer;
 };
 
 #endif // MAINWINDOW_H

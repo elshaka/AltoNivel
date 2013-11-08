@@ -13,13 +13,16 @@ SOURCES += main.cpp \
     clienteform.cpp \
     db.cpp \
     factura.cpp \
-    gestionarclientes.cpp
+    gestionarclientes.cpp \
+    seleccionarcliente.cpp
 HEADERS += mainwindow.h \
     cliente.h \
     clienteform.h \
     db.h \
     factura.h \
-    gestionarclientes.h
+    gestionarclientes.h \
+    seleccionarcliente.h
 FORMS += mainwindow.ui \
     clienteform.ui \
-    gestionarclientes.ui
+    gestionarclientes.ui \
+    seleccionarcliente.ui

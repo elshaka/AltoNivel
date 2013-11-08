@@ -68,7 +68,9 @@
               <string>Seleccionar cliente</string>
              </property>
              <property name="icon">
-              <iconset theme="find"/>
+              <iconset theme="find">
+               <normaloff/>
+              </iconset>
              </property>
             </widget>
            </item>
@@ -93,6 +95,9 @@
          </item>
          <item row="2" column="1">
           <widget class="QDateEdit" name="venceDateEdit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
@@ -102,10 +107,17 @@
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
+           <property name="date">
+            <date>
+             <year>2013</year>
+             <month>11</month>
+             <day>8</day>
+            </date>
+           </property>
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="label_6">
+          <widget class="QLabel" name="label_5">
            <property name="text">
             <string>Monto</string>
            </property>
@@ -115,7 +127,7 @@
           <widget class="QLineEdit" name="montoLineEdit"/>
          </item>
          <item row="5" column="0">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="abonoLabel">
            <property name="text">
             <string>Abono</string>
            </property>
@@ -129,40 +141,16 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
           <widget class="QPushButton" name="crearFacturaPushButton">
            <property name="text">
             <string>Crear factura</string>
            </property>
            <property name="icon">
-            <iconset theme="filenew"/>
+            <iconset theme="filenew">
+             <normaloff/>
+            </iconset>
            </property>
           </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -197,7 +185,9 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionGestionarClientes">
    <property name="icon">
-    <iconset theme="edit-find-replace"/>
+    <iconset theme="edit-find-replace">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Gestionar clientes</string>
@@ -211,7 +201,9 @@
   </action>
   <action name="actionVer_facturas_en_sistema">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Ver facturas en sistema</string>

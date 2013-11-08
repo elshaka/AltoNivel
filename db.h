@@ -13,13 +13,15 @@ class DB
 protected:
     QSqlDatabase db;
 
-public:
-    DB();
+private:
+    QSqlQuery excecute(QString sql);
     QSqlError addConnection(const QString &driver, const QString &dbName,
                             const QString &host, const QString &user, const QString &passwd, int port);
-    QSqlQuery excecute(QString sql);
     void setDatabase(QSqlDatabase db);
     QSqlDatabase getDatabase();
+
+public:
+    DB();
     QList<QString> crearCliente(Cliente cliente);
     QList<QString> actualizarCliente(Cliente cliente);
     bool eliminarCliente(Cliente cliente);
