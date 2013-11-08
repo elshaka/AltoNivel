@@ -10,8 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->ui->tipoComboBox->addItem(QString("Sencilla"));
-    this->ui->tipoComboBox->addItem(QString("Credito"));
     this->on_timer_timeout();
     this->timer = new QTimer(this);
     this->connect(this->timer, SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
