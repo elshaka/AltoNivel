@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QList>
+#include "db.h"
 
 class Cliente
 {
@@ -12,6 +13,8 @@ class Cliente
     QString cedula;
     QString direccion;
     QString telefono;
+
+    static DB* db;
 
 public:
     Cliente();
@@ -29,6 +32,11 @@ public:
     void setTelefono(QString telefono);
     bool valido();
     QList<QString> errores;
+
+    bool guardar();
+    bool eliminar();
+    static QList<Cliente> obtenerTodos();
+
     ~Cliente();
 };
 

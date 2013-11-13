@@ -71,7 +71,7 @@ GestionarClientes::GestionarClientes(DB *db, QWidget *parent) :
     ui->setupUi(this);
     this->db = db;
     this->setAttribute(Qt::WA_DeleteOnClose);
-    this->tablaClientes = new ClientesTableModel(this->db->obtenerClientes());
+    this->tablaClientes = new ClientesTableModel(Cliente::obtenerTodos());
     this->ui->clientesTableWidget->setModel(this->tablaClientes);
 }
 
@@ -88,7 +88,7 @@ void GestionarClientes::habilitarEditarEliminar(bool habilitar)
 
 void GestionarClientes::actualizarTablaClientes()
 {
-    this->tablaClientes->actualizarClientes(this->db->obtenerClientes());
+    this->tablaClientes->actualizarClientes(Cliente::obtenerTodos());
     this->habilitarEditarEliminar(false);
 }
 
@@ -102,7 +102,7 @@ void GestionarClientes::on_actionNuevo_triggered()
     ClienteForm clienteForm(this);
     if (clienteForm.exec() == QDialog::Accepted)
     {
-        this->db->crearCliente(clienteForm.getCliente());
+        clienteForm.getCliente().guardar();
         this->actualizarTablaClientes();
     }
 }
@@ -113,7 +113,7 @@ void GestionarClientes::on_actionEditar_triggered()
     ClienteForm clienteForm(this, this->tablaClientes->cliente(fila));
     if (clienteForm.exec() == QDialog::Accepted)
     {
-        this->db->actualizarCliente(clienteForm.getCliente());
+        clienteForm.getCliente().guardar();
         this->actualizarTablaClientes();
     }
 }
@@ -125,7 +125,7 @@ void GestionarClientes::on_actionEliminar_triggered()
     if (QMessageBox::question(this, "Eliminar cliente", "¿Esta seguro de querer eliminar al cliente "+cliente.getNombre()+"?")
             == QMessageBox::Yes)
     {
-        if (this->db->eliminarCliente(cliente))
+        if (cliente.eliminar())
             this->actualizarTablaClientes();
         else
             QMessageBox::warning(this, "No se puede eliminar el cliente", "El cliente no se puede eliminar porque tiene facturas asociadas");

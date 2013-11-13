@@ -1,49 +1,70 @@
 #ifndef FACTURA_H
 #define FACTURA_H
 #include "cliente.h"
+#include "db.h"
+#include <QDateTime>
 
 class Factura
 {
     int id;
     QString tipo;
-    int cliente_id;
-    Cliente cliente;
+    Cliente* cliente;
     int numero;
-    QString fechaEmision;
+    QDateTime* fechaEmision;
     float monto;
     QString estado;
 
+    static DB* db;
+
 public:
     Factura();
-    Factura(int cliente_id, QString fechaEmision, float monto, QString estado, int numero = 0, int id = 0);
-    void setClienteId(int cliente_id);
-    void setCliente(Cliente cliente);
-    void setNumero(int numero);
-    void setFechaEmision(QString fechaEmision);
+    Factura(Cliente &cliente, QDateTime &fechaEmision, float monto, QString estado, int numero = 0, int id = 0);
+    void setTipo(QString tipo);
+    void setCliente(Cliente &cliente);
+    void setFechaEmision(QDateTime &fechaEmision);
+    virtual void setFechaVencimiento(QDateTime & /*fechaVencimiento*/) {}
     void setMonto(float monto);
     void setEstado(QString estado);
-    int getClienteId();
-    Cliente getCliente();
+    virtual void setSaldoPendiente(float & /*saldoPendiente*/) {}
+    void getTipo();
+    Cliente* getCliente();
     int getNumero();
-    QString getFechaEmision();
-    virtual QString getFechaVencimiento();
+    QDateTime* getFechaEmision();
+    virtual QDateTime* getFechaVencimiento() { return new QDateTime(); }
     float getMonto();
-    virtual float getSaldoPendiente();
-    void cancelar();
+    QString getEstado();
+    virtual float getSaldoPendiente() { return 0; }
+    bool cancelar();
     void anular();
+    virtual bool abonar() { return false;}
     virtual bool valida();
+    QList<QString> errores;
+
+    static QList<Cliente> obtenerTodos();
+    bool guardar();
+    bool eliminar();
+
+    static QString PORCANCELAR;
+    static QString CANCELADA;
+    static QString ANULADA;
+    static QList<QString> ESTADOS;
+    static QString CONTADO;
+    static QString CREDITO;
+    static QList<QString> TIPOS;
 };
 
 class FacturaCredito : public Factura
 {
-    QString fechaVencimiento;
+    QDateTime* fechaVencimiento;
     float saldoPendiente;
 public:
     FacturaCredito();
-    FacturaCredito(int cliente_id, QString fechaEmision, QString fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero = 0, int id = 0);
-    void setFechaVencimiento(QString fechaVencimiento);
+    FacturaCredito(Cliente &cliente, QDateTime &fechaEmision, QDateTime &fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero = 0, int id = 0);
+    void setFechaVencimiento(QDateTime &fechaVencimiento);
     void setSaldoPendiente(float saldoPendiente);
-    void abonar();
+    QDateTime* getFechaVencimiento();
+    float getSaldoPendiente();
+    bool abonar(float abono);
     bool valida();
 };
 

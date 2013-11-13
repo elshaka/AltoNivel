@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->abonoLineEdit->setVisible(false);
     this->ui->venceLabel->setVisible(false);
     this->ui->venceDateEdit->setVisible(false);
-
 }
 
 MainWindow::~MainWindow()
