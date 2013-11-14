@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::borrarCampos()
 {
     this->ui->venceDateEdit->setDate(QDate::currentDate().addDays(1));
+    this->ui->clienteLineEdit->clear();
     this->ui->montoLineEdit->clear();
     this->ui->abonoLineEdit->clear();
 }
@@ -100,6 +101,9 @@ void MainWindow::on_crearFacturaPushButton_clicked()
                 mensaje.append(QString("- %1\n").arg(*i));
             QMessageBox::warning(this, "Atributos invalidos", mensaje);
         }
+        delete this->factura;
+        this->cliente = NULL;
+        this->borrarCampos();
     }
     else if (tipo == Factura::CREDITO)
     {
