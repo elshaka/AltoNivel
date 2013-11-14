@@ -24,27 +24,27 @@ public:
     Factura(Cliente* cliente, QDateTime fechaEmision, float monto, QString estado, int numero = 0, int id = 0);
     void setCliente(Cliente* cliente);
     void setFechaEmision(QDateTime fechaEmision);
-    virtual void setFechaVencimiento(QDateTime /*fechaVencimiento*/) {}
+    virtual void setFechaVencimiento(QDateTime /*fechaVencimiento*/);
     void setMonto(float monto);
     void setEstado(QString estado);
-    virtual void setSaldoPendiente(float /*saldoPendiente*/) {}
+    virtual void setSaldoPendiente(float /*saldoPendiente*/);
     QString getTipo();
     int getId();
     Cliente* getCliente();
     int getNumero();
     QDateTime getFechaEmision();
-    virtual QDateTime getFechaVencimiento() { return QDateTime(); }
+    virtual QDateTime getFechaVencimiento();
     float getMonto();
     QString getEstado();
-    virtual float getSaldoPendiente() { return 0; }
+    virtual float getSaldoPendiente();
     virtual bool cancelar();
     void anular();
-    virtual bool abonar(float /*abono*/) { return false;}
+    virtual bool abonar(float /*abono*/);
     virtual bool valida();
     virtual ~Factura();
     QList<QString> errores;
 
-    static QList<Factura> obtenerTodas();
+    static QList<Factura *> obtenerTodas();
     bool guardar();
     bool eliminar();
 

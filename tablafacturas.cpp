@@ -9,7 +9,7 @@ QList<QString> TablaFacturas::headers = QList<QString>() << "Numero"
                                                          << "Emitida"
                                                          << "Vence";
 
-TablaFacturas::TablaFacturas(QList<Factura> facturas, QObject *parent) :
+TablaFacturas::TablaFacturas(QList<Factura *> facturas, QObject *parent) :
     QAbstractTableModel(parent)
 {
     this->facturas = facturas;
@@ -37,31 +37,31 @@ QVariant TablaFacturas::headerData(int section, Qt::Orientation orientation, int
 
 QVariant TablaFacturas::data(const QModelIndex &index, int role) const
 {
-    Factura factura = this->facturas.at(index.row());
+    Factura* factura = this->facturas.at(index.row());
     if (role == Qt::DisplayRole)
     {
         switch(index.column())
         {
-        case 0: return QString::number(factura.getNumero());
-        case 1: return QString("%1 %2").arg(factura.getCliente()->getNombre(),
-                                            factura.getCliente()->getApellido());
-        case 2: return factura.getTipo();
-        case 3: return factura.getEstado();
-        case 4: return QString::number(factura.getMonto());
-        case 5: return QString::number(factura.getSaldoPendiente());
-        case 6: return factura.getFechaEmision().toString(Factura::FORMATOFECHA);
-        case 7: return factura.getFechaVencimiento().toString(Factura::FORMATOFECHA);
+        case 0: return QString::number(factura->getNumero());
+        case 1: return QString("%1 %2").arg(factura->getCliente()->getNombre(),
+                                            factura->getCliente()->getApellido());
+        case 2: return factura->getTipo();
+        case 3: return factura->getEstado();
+        case 4: return QString::number(factura->getMonto());
+        case 5: return QString::number(factura->getSaldoPendiente());
+        case 6: return factura->getFechaEmision().toString(Factura::FORMATOFECHA);
+        case 7: return factura->getFechaVencimiento().toString(Factura::FORMATOFECHA);
         }
     }
     return QVariant();
 }
 
-Factura TablaFacturas::factura(int fila)
+Factura* TablaFacturas::factura(int fila)
 {
     return this->facturas.at(fila);
 }
 
-void TablaFacturas::actualizarFacturas(QList<Factura> facturas)
+void TablaFacturas::actualizarFacturas(QList<Factura *> facturas)
 {
     this->beginResetModel();
     this->facturas = facturas;

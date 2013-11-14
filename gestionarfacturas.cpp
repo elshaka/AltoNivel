@@ -38,11 +38,11 @@ void GestionarFacturas::on_facturasTableWidget_clicked()
 void GestionarFacturas::on_actionEditarFactura_triggered()
 {
     int fila = this->ui->facturasTableWidget->currentIndex().row();
-    Factura factura = this->tablaFacturas->factura(fila);
+    Factura* factura = this->tablaFacturas->factura(fila);
     FacturaForm facturaForm(factura, this);
     if (facturaForm.exec() == QDialog::Accepted)
     {
-        facturaForm.getFactura().guardar();
+        facturaForm.getFactura()->guardar();
         this->actualizarTablaFacturas();
     }
 
@@ -51,14 +51,14 @@ void GestionarFacturas::on_actionEditarFactura_triggered()
 void GestionarFacturas::on_actionAnularFactura_triggered()
 {
     int fila = this->ui->facturasTableWidget->currentIndex().row();
-    Factura factura = this->tablaFacturas->factura(fila);
-    if (factura.getEstado() != Factura::ANULADA)
+    Factura* factura = this->tablaFacturas->factura(fila);
+    if (factura->getEstado() != Factura::ANULADA)
     {
-        if (QMessageBox::question(this, "Anular factura", QString("¿Esta seguro de querer anular la factura N° %1?").arg(factura.getNumero()))
+        if (QMessageBox::question(this, "Anular factura", QString("¿Esta seguro de querer anular la factura N° %1?").arg(factura->getNumero()))
                 == QMessageBox::Yes)
         {
-            factura.anular();
-            factura.guardar();
+            factura->anular();
+            factura->guardar();
             this->actualizarTablaFacturas();
         }
     }

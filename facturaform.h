@@ -13,8 +13,8 @@ class FacturaForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit FacturaForm(Factura factura, QWidget *parent = 0);
-    Factura getFactura();
+    explicit FacturaForm(Factura *factura, QWidget *parent = 0);
+    Factura *getFactura();
     ~FacturaForm();
 
 private slots:
@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::FacturaForm *ui;
-    Factura factura;
+    Factura *factura;
     void actualizarCampos();
 };
 

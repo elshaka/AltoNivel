@@ -53,6 +53,8 @@ void Factura::setFechaEmision(QDateTime fechaEmision)
     this->fechaEmision = fechaEmision;
 }
 
+void Factura::setFechaVencimiento(QDateTime /*fechaVencimiento*/) {}
+
 void Factura::setMonto(float monto)
 {
     this->monto = monto;
@@ -62,6 +64,8 @@ void Factura::setEstado(QString estado)
 {
     this->estado = estado;
 }
+
+void Factura::setSaldoPendiente(float /*saldoPendiente*/) {}
 
 Cliente* Factura::getCliente()
 {
@@ -88,6 +92,8 @@ QDateTime Factura::getFechaEmision()
     return this->fechaEmision;
 }
 
+QDateTime Factura::getFechaVencimiento() { return QDateTime(); }
+
 float Factura::getMonto()
 {
     return this->monto;
@@ -97,6 +103,8 @@ QString Factura::getEstado()
 {
     return this->estado;
 }
+
+float Factura::getSaldoPendiente() { return 0; }
 
 bool Factura::cancelar()
 {
@@ -112,6 +120,8 @@ void Factura::anular()
 {
     this->setEstado(Factura::ANULADA);
 }
+
+bool Factura::abonar(float /*abono*/) { return false;}
 
 bool Factura::valida()
 {
@@ -179,10 +189,10 @@ bool Factura::eliminar()
     return true;
 }
 
-QList<Factura> Factura::obtenerTodas()
+QList<Factura *> Factura::obtenerTodas()
 {
     QSqlQuery q;
-    QList<Factura> facturas;
+    QList<Factura *> facturas;
     qDebug() << "Cargar facturas";
     q = Factura::db->excecute("SELECT clientes.id, nombre, apellido, cedula, telefono, direccion, "
                               "facturas.id, numero, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado "
@@ -197,21 +207,21 @@ QList<Factura> Factura::obtenerTodas()
                                        q.value(5).toString(),
                                        q.value(0).toInt());
         if (q.value(8) == Factura::CONTADO)
-            facturas << Factura(cliente,
-                                q.value(9).toDateTime(),
-                                q.value(11).toFloat(),
-                                q.value(13).toString(),
-                                q.value(7).toInt(),
-                                q.value(6).toInt());
+            facturas << new Factura(cliente,
+                                    q.value(9).toDateTime(),
+                                    q.value(11).toFloat(),
+                                    q.value(13).toString(),
+                                    q.value(7).toInt(),
+                                    q.value(6).toInt());
         else
-            facturas << FacturaCredito(cliente,
-                                       q.value(9).toDateTime(),
-                                       q.value(10).toDateTime(),
-                                       q.value(11).toFloat(),
-                                       q.value(12).toFloat(),
-                                       q.value(13).toString(),
-                                       q.value(7).toInt(),
-                                       q.value(6).toInt());
+            facturas << new FacturaCredito(cliente,
+                                           q.value(9).toDateTime(),
+                                           q.value(10).toDateTime(),
+                                           q.value(11).toFloat(),
+                                           q.value(12).toFloat(),
+                                           q.value(13).toString(),
+                                           q.value(7).toInt(),
+                                           q.value(6).toInt());
     }
     return facturas;
 }
