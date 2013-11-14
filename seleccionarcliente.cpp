@@ -37,7 +37,10 @@ void SeleccionarCliente::on_aceptarPushButton_clicked()
         this->cliente.setTelefono(this->ui->lineEditTelefono->text());
         this->cliente.setDireccion(this->ui->plainTextEditDireccion->toPlainText());
         if (this->cliente.valido())
+        {
+            this->cliente.guardar();
             this->accept();
+        }
         else
         {
             QString mensaje = "";

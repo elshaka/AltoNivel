@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->timer_timeout();
+    this->ui->venceDateEdit->setMinimumDate(QDate::currentDate().addDays(1));
+    this->ui->venceDateEdit->setDate(QDate::currentDate().addDays(1));
     this->timer = new QTimer(this);
     this->connect(this->timer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
     this->timer->start(1000);
@@ -53,5 +55,5 @@ void MainWindow::on_seleccionarClientePushButton_clicked()
 
 void MainWindow::timer_timeout()
 {
-    this->ui->statusBar->showMessage(QTime::currentTime().toString());
+    this->ui->statusBar->showMessage(QDateTime::currentDateTime().toString("dddd, d 'de' MMMM 'de' yyyy. hh:mm:ss"));
 }
