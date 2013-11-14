@@ -11,6 +11,7 @@ GestionarFacturas::GestionarFacturas(QWidget *parent) :
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->tablaFacturas = new TablaFacturas(Factura::obtenerTodas());
     this->ui->facturasTableWidget->setModel(this->tablaFacturas);
+    this->ui->facturasTableWidget->setColumnWidth(6, 280);
 }
 
 GestionarFacturas::~GestionarFacturas()
