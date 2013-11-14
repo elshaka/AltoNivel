@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>GestionarClientes</class>
- <widget class="QMainWindow" name="GestionarClientes">
+ <class>GestionarFacturas</class>
+ <widget class="QMainWindow" name="GestionarFacturas">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,12 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Gestionar clientes</string>
+   <string>Gestionar facturas</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTableView" name="clientesTableWidget">
+     <widget class="QTableView" name="facturasTableWidget">
       <property name="alternatingRowColors">
        <bool>true</bool>
       </property>

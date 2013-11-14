@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "gestionarclientes.h"
+#include "gestionarfacturas.h"
 #include "seleccionarcliente.h"
 #include <QMessageBox>
 #include <QDateTime>
@@ -32,6 +33,12 @@ void MainWindow::on_actionGestionarClientes_triggered()
 {
     GestionarClientes* gestionarClientes = new GestionarClientes(this);
     gestionarClientes->show();
+}
+
+void MainWindow::on_actionVer_facturas_en_sistema_triggered()
+{
+    GestionarFacturas* gestionarFacturas = new GestionarFacturas(this);
+    gestionarFacturas->show();
 }
 
 void MainWindow::on_tipoComboBox_currentIndexChanged(const QString &arg1)
