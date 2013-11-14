@@ -14,6 +14,9 @@ SeleccionarCliente::SeleccionarCliente(QWidget *parent) :
     this->tablaFiltradaClientes->setFilterKeyColumn(-1);
     this->tablaFiltradaClientes->setFilterCaseSensitivity(Qt::CaseInsensitive);
     this->ui->clientesTableView->setModel(this->tablaFiltradaClientes);
+    this->ui->clientesTableView->setColumnWidth(0, 200);
+    this->ui->clientesTableView->setColumnWidth(1, 150);
+    this->ui->clientesTableView->setColumnWidth(2, 150);
     this->connect(this->ui->filtroLineEdit, SIGNAL(textChanged(QString)), this->tablaFiltradaClientes, SLOT(setFilterRegExp(QString)));
 }
 

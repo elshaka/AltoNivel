@@ -2,6 +2,7 @@
 #define GESTIONARCLIENTES_H
 
 #include <QMainWindow>
+#include <QSortFilterProxyModel>
 #include "db.h"
 #include "cliente.h"
 #include "tablaclientes.h"
@@ -18,7 +19,6 @@ class GestionarClientes : public QMainWindow
 public:
     explicit GestionarClientes(QWidget *parent = 0);
     void actualizarTablaClientes();
-    void habilitarEditarEliminar(bool habilitar);
     ~GestionarClientes();
 
 private slots:
@@ -30,10 +30,13 @@ private slots:
 
     void on_actionEliminar_triggered();
 
+    void habilitarEditarEliminar();
+
 private:
     Ui::GestionarClientes *ui;
     DB *db;
     TablaClientes *tablaClientes;
+    QSortFilterProxyModel* tablaFiltradaClientes;
 };
 
 #endif // GESTIONARCLIENTES_H

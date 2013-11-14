@@ -135,20 +135,23 @@ bool Factura::guardar()
         {
             qDebug() << "Crear nueva factura";
             QString fechaVencimiento = this->getFechaVencimiento().isNull() ? "NULL" : this->getFechaVencimiento().toString(DB::formatoFecha);
-            q = this->db->excecute("INSERT INTO facturas (cliente_id, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado) values ('" +
-                                   QString::number(this->cliente->getId()) + "','" +
-                                   this->getTipo() + "','" +
-                                   this->getFechaEmision().toString(DB::formatoFecha) + "','" +
-                                   fechaVencimiento + "','" +
-                                   QString::number(this->getMonto()) + "','" +
-                                   QString::number(this->getSaldoPendiente()) + "','" +
-                                   this->getEstado() + "')");
+            q = this->db->excecute(QString("INSERT INTO facturas (cliente_id, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado) "
+                                   "values ('%1', '%2', '%3', '%4', '%5', '%6', '%7')")
+                                   .arg(QString::number(this->cliente->getId()),
+                                        this->getTipo(),
+                                        this->getFechaEmision().toString(DB::formatoFecha),
+                                        fechaVencimiento,
+                                        QString::number(this->getMonto()),
+                                        QString::number(this->getSaldoPendiente()),
+                                        this->getEstado()));
         }
         else
         {
             qDebug() << "Actualizar factura";
-            q = this->db->excecute("UPDATE clientes SET saldo_pendiente = '" + QString::number(this->getSaldoPendiente()) + "', " +
-                                                                "estado = '" + this->getEstado());
+            q = this->db->excecute(QString("UPDATE clientes SET saldo_pendiente = %1, estado ='%2' WHERE id = %3")
+                                   .arg(QString::number(this->getSaldoPendiente()),
+                                        this->getEstado(),
+                                        QString::number(this->getId())));
         }
         return true;
     }

@@ -16,6 +16,20 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Filtrar</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="filtroLineEdit"/>
+      </item>
+     </layout>
+    </item>
+    <item>
      <widget class="QTableView" name="clientesTableWidget">
       <property name="alternatingRowColors">
        <bool>true</bool>
@@ -56,7 +70,9 @@
   </widget>
   <action name="actionNuevo">
    <property name="icon">
-    <iconset theme="filenew"/>
+    <iconset theme="filenew">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Nuevo</string>
@@ -70,7 +86,9 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="format-text-direction-ltr"/>
+    <iconset theme="format-text-direction-ltr">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Editar</string>
@@ -84,7 +102,9 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="gtk-delete"/>
+    <iconset theme="gtk-delete">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Eliminar</string>

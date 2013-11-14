@@ -11,7 +11,17 @@ GestionarClientes::GestionarClientes(QWidget *parent) :
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->tablaClientes = new TablaClientes(Cliente::obtenerTodos());
-    this->ui->clientesTableWidget->setModel(this->tablaClientes);
+    this->tablaFiltradaClientes = new QSortFilterProxyModel(this);
+    this->tablaFiltradaClientes->setSourceModel(this->tablaClientes);
+    this->tablaFiltradaClientes->setFilterKeyColumn(-1);
+    this->tablaFiltradaClientes->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    this->ui->clientesTableWidget->setModel(this->tablaFiltradaClientes);
+    this->ui->clientesTableWidget->setColumnWidth(0, 200);
+    this->ui->clientesTableWidget->setColumnWidth(1, 150);
+    this->ui->clientesTableWidget->setColumnWidth(2, 150);
+    this->ui->clientesTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    this->connect(this->ui->filtroLineEdit, SIGNAL(textChanged(QString)), this->tablaFiltradaClientes, SLOT(setFilterRegExp(QString)));
+    this->connect(this->ui->filtroLineEdit, SIGNAL(textChanged(QString)), this, SLOT(habilitarEditarEliminar()));
 }
 
 GestionarClientes::~GestionarClientes()
@@ -19,8 +29,11 @@ GestionarClientes::~GestionarClientes()
     delete ui;
 }
 
-void GestionarClientes::habilitarEditarEliminar(bool habilitar)
+void GestionarClientes::habilitarEditarEliminar()
 {
+    bool habilitar = false;
+    if(this->ui->clientesTableWidget->currentIndex().row() >= 0)
+        habilitar = true;
     this->ui->actionEditar->setEnabled(habilitar);
     this->ui->actionEliminar->setEnabled(habilitar);
 }
@@ -28,12 +41,12 @@ void GestionarClientes::habilitarEditarEliminar(bool habilitar)
 void GestionarClientes::actualizarTablaClientes()
 {
     this->tablaClientes->actualizarClientes(Cliente::obtenerTodos());
-    this->habilitarEditarEliminar(false);
+    this->habilitarEditarEliminar();
 }
 
 void GestionarClientes::on_clientesTableWidget_clicked()
 {
-    this->habilitarEditarEliminar(true);
+    this->habilitarEditarEliminar();
 }
 
 void GestionarClientes::on_actionNuevo_triggered()
@@ -48,7 +61,8 @@ void GestionarClientes::on_actionNuevo_triggered()
 
 void GestionarClientes::on_actionEditar_triggered()
 {
-    int fila = this->ui->clientesTableWidget->currentIndex().row();
+    QModelIndex filaFiltrada = this->ui->clientesTableWidget->currentIndex();
+    int fila = this->tablaFiltradaClientes->mapToSource(filaFiltrada).row();
     ClienteForm clienteForm(this, this->tablaClientes->cliente(fila));
     if (clienteForm.exec() == QDialog::Accepted)
     {
