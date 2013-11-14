@@ -15,7 +15,9 @@ SOURCES += main.cpp \
     factura.cpp \
     gestionarclientes.cpp \
     seleccionarcliente.cpp \
-    tablaclientes.cpp
+    tablaclientes.cpp \
+    gestionarfacturas.cpp \
+    tablafacturas.cpp
 HEADERS += mainwindow.h \
     cliente.h \
     clienteform.h \
@@ -23,8 +25,11 @@ HEADERS += mainwindow.h \
     factura.h \
     gestionarclientes.h \
     seleccionarcliente.h \
-    tablaclientes.h
+    tablaclientes.h \
+    gestionarfacturas.h \
+    tablafacturas.h
 FORMS += mainwindow.ui \
     clienteform.ui \
     gestionarclientes.ui \
-    seleccionarcliente.ui
+    seleccionarcliente.ui \
+    gestionarfacturas.ui
