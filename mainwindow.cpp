@@ -11,7 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->cliente = NULL;
     this->timer_timeout();
+    this->ui->tipoComboBox->addItem("Contado", QVariant(Factura::CONTADO));
+    this->ui->tipoComboBox->addItem("Credito", QVariant(Factura::CREDITO));
     this->ui->venceDateEdit->setMinimumDate(QDate::currentDate().addDays(1));
     this->ui->venceDateEdit->setDate(QDate::currentDate().addDays(1));
     this->timer = new QTimer(this);
@@ -21,6 +24,13 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->abonoLineEdit->setVisible(false);
     this->ui->venceLabel->setVisible(false);
     this->ui->venceDateEdit->setVisible(false);
+}
+
+void MainWindow::borrarCampos()
+{
+    this->ui->venceDateEdit->setDate(QDate::currentDate().addDays(1));
+    this->ui->montoLineEdit->clear();
+    this->ui->abonoLineEdit->clear();
 }
 
 MainWindow::~MainWindow()
@@ -56,7 +66,7 @@ void MainWindow::on_seleccionarClientePushButton_clicked()
     if (seleccionarCliente.exec() == QDialog::Accepted)
     {
         this->cliente = seleccionarCliente.getCliente();
-        this->ui->clienteLineEdit->setText(this->cliente.getNombre() + " " + this->cliente.getApellido());
+        this->ui->clienteLineEdit->setText(this->cliente->getNombre() + " " + this->cliente->getApellido());
     }
 }
 
@@ -67,5 +77,32 @@ void MainWindow::timer_timeout()
 
 void MainWindow::on_crearFacturaPushButton_clicked()
 {
+    int tipoIndex = this->ui->tipoComboBox->currentIndex();
+    QString tipo = this->ui->tipoComboBox->itemData(tipoIndex).toString();
+    QDateTime fechaActual = QDateTime::currentDateTime();
+    if(tipo == Factura::CONTADO)
+    {
+        this->factura = new Factura(this->cliente,
+                                    fechaActual,
+                                    this->ui->montoLineEdit->text().toFloat(),
+                                    Factura::PORCANCELAR);
+        if(this->factura->guardar())
+        {
+            QMessageBox::information(this, "Factura creada", "La factura fue creada exitosamente en el sistema");
+            this->borrarCampos();
+        }
+        else
+        {
+            QString mensaje = "";
+            QList<QString>::Iterator i;
+            QList<QString> errores = this->factura->errores;
+            for(i = errores.begin(); i != errores.end(); ++i)
+                mensaje.append(QString("- %1\n").arg(*i));
+            QMessageBox::warning(this, "Atributos invalidos", mensaje);
+        }
+    }
+    else if (tipo == Factura::CREDITO)
+    {
 
+    }
 }

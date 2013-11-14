@@ -7,6 +7,7 @@ SeleccionarCliente::SeleccionarCliente(QWidget *parent) :
     ui(new Ui::SeleccionarCliente)
 {
     ui->setupUi(this);
+    this->cliente = new Cliente();
     this->ui->existenteWidget->setVisible(false);
     this->tablaClientes = new TablaClientes(Cliente::obtenerTodos());
     this->tablaFiltradaClientes = new QSortFilterProxyModel(this);
@@ -20,7 +21,7 @@ SeleccionarCliente::SeleccionarCliente(QWidget *parent) :
     this->connect(this->ui->filtroLineEdit, SIGNAL(textChanged(QString)), this->tablaFiltradaClientes, SLOT(setFilterRegExp(QString)));
 }
 
-Cliente SeleccionarCliente::getCliente()
+Cliente* SeleccionarCliente::getCliente()
 {
     return this->cliente;
 }
@@ -34,21 +35,21 @@ void SeleccionarCliente::on_aceptarPushButton_clicked()
 {
     if(this->ui->nuevoRadioButton->isChecked())
     {
-        this->cliente.setNombre(this->ui->lineEditNombre->text());
-        this->cliente.setApellido(this->ui->lineEditApellido->text());
-        this->cliente.setCedula(this->ui->lineEditCedula->text());
-        this->cliente.setTelefono(this->ui->lineEditTelefono->text());
-        this->cliente.setDireccion(this->ui->plainTextEditDireccion->toPlainText());
-        if (this->cliente.valido())
+        this->cliente->setNombre(this->ui->lineEditNombre->text());
+        this->cliente->setApellido(this->ui->lineEditApellido->text());
+        this->cliente->setCedula(this->ui->lineEditCedula->text());
+        this->cliente->setTelefono(this->ui->lineEditTelefono->text());
+        this->cliente->setDireccion(this->ui->plainTextEditDireccion->toPlainText());
+        if (this->cliente->valido())
         {
-            this->cliente.guardar();
+            this->cliente->guardar();
             this->accept();
         }
         else
         {
             QString mensaje = "";
             QList<QString>::Iterator i;
-            QList<QString> errores = this->cliente.errores;
+            QList<QString> errores = this->cliente->errores;
             for(i = errores.begin(); i != errores.end(); ++i)
                 mensaje.append(QString("- %1\n").arg(*i));
             QMessageBox::warning(this, "Atributos invalidos", mensaje);

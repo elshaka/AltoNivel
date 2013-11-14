@@ -21,8 +21,8 @@ protected:
 
 public:
     Factura();
-    Factura(Cliente &cliente, QDateTime fechaEmision, float monto, QString estado, int numero = 0, int id = 0);
-    void setCliente(Cliente &cliente);
+    Factura(Cliente* cliente, QDateTime fechaEmision, float monto, QString estado, int numero = 0, int id = 0);
+    void setCliente(Cliente* cliente);
     void setFechaEmision(QDateTime fechaEmision);
     virtual void setFechaVencimiento(QDateTime /*fechaVencimiento*/) {}
     void setMonto(float monto);
@@ -63,7 +63,7 @@ class FacturaCredito : public Factura
     float saldoPendiente;
 public:
     FacturaCredito();
-    FacturaCredito(Cliente &cliente, QDateTime fechaEmision, QDateTime fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero = 0, int id = 0);
+    FacturaCredito(Cliente* cliente, QDateTime fechaEmision, QDateTime fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero = 0, int id = 0);
     void setFechaVencimiento(QDateTime fechaVencimiento);
     void setSaldoPendiente(float saldoPendiente);
     QDateTime getFechaVencimiento();

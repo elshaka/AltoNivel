@@ -47,9 +47,9 @@ QVariant TablaClientes::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-Cliente TablaClientes::cliente(int fila)
+Cliente* TablaClientes::cliente(int fila)
 {
-    return this->clientes.at(fila);
+    return new Cliente(this->clientes.at(fila));
 }
 
 void TablaClientes::actualizarClientes(QList<Cliente> clientes)

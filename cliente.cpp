@@ -12,6 +12,17 @@ Cliente::Cliente()
     this->id = 0;
 }
 
+Cliente::Cliente(Cliente* cliente)
+{
+    this->nombre = cliente->getNombre();
+    this->apellido = cliente->getApellido();
+    this->cedula = cliente->getCedula();
+    this->telefono = cliente->getTelefono();
+    this->direccion = cliente->getDireccion();
+    this->id = cliente->getId();
+    qDebug() << QString("id de cliente %1").arg(QString::number(this->id));
+}
+
 Cliente::Cliente(QString nombre, QString apellido, QString cedula, QString telefono, QString direccion, int id)
 {
     this->nombre = nombre;
@@ -123,12 +134,14 @@ bool Cliente::guardar()
         if (this->getId() == 0)
         {
             qDebug() << "Crear nuevo cliente";
-            q = this->db->excecute(QString("INSERT INTO clientes (nombre, apellido, cedula, telefono, direccion) values ('%1', '%2', '%3', '%4', '%5')")
+            q = this->db->excecute(QString("INSERT INTO clientes (nombre, apellido, cedula, telefono, direccion) VALUES ('%1', '%2', '%3', '%4', '%5') RETURNING id")
                                    .arg(this->getNombre(),
                                         this->getApellido(),
                                         this->getCedula(),
                                         this->getTelefono(),
                                         this->getDireccion()));
+            q.next();
+            this->id = q.value(0).toInt();
         }
         else
         {

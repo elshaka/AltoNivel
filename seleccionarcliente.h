@@ -16,7 +16,7 @@ class SeleccionarCliente : public QDialog
 
 public:
     explicit SeleccionarCliente(QWidget *parent = 0);
-    Cliente getCliente();
+    Cliente* getCliente();
     ~SeleccionarCliente();
 
 private slots:
@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::SeleccionarCliente *ui;
-    Cliente cliente;
+    Cliente* cliente;
     TablaClientes* tablaClientes;
     QSortFilterProxyModel* tablaFiltradaClientes;
 };

@@ -5,6 +5,7 @@ QList<QString> TablaFacturas::headers = QList<QString>() << "Numero"
                                                          << "Tipo"
                                                          << "Monto"
                                                          << "Pendiente"
+                                                         << "Emitida"
                                                          << "Vence";
 
 TablaFacturas::TablaFacturas(QList<Factura> facturas, QObject *parent) :
@@ -40,12 +41,14 @@ QVariant TablaFacturas::data(const QModelIndex &index, int role) const
     {
         switch(index.column())
         {
-            case 0: return factura.getNumero();
-//            case 1: return factura.getCliente();
-            case 2: return factura.getTipo();
-            case 3: return factura.getMonto();
-            case 4: return factura.getSaldoPendiente();
-            case 5: return factura.getFechaVencimiento();
+        case 0: return QString::number(factura.getNumero());
+        case 1: return QString("%1 %2").arg(factura.getCliente()->getNombre(),
+                                            factura.getCliente()->getApellido());
+        case 2: return factura.getTipo();
+        case 3: return QString::number(factura.getMonto());
+        case 4: return QString::number(factura.getSaldoPendiente());
+        case 5: return factura.getFechaEmision().toString(DB::formatoFecha);
+        case 6: return factura.getFechaVencimiento().toString(DB::formatoFecha);
         }
     }
     return QVariant();

@@ -14,17 +14,19 @@ class ClienteForm : public QDialog
     Q_OBJECT
     
 public:
-    explicit ClienteForm(QWidget *parent = 0, Cliente cliente = Cliente(), QString titulo = "Nuevo cliente");
-    Cliente getCliente();
+    explicit ClienteForm(QWidget *parent = 0, Cliente* cliente = NULL, QString titulo = "Nuevo cliente");
+    Cliente *getCliente();
     ~ClienteForm();
 
 private slots:
 
     void on_pushButtonAceptar_clicked();
 
+    void on_pushButtonCancelar_clicked();
+
 private:
     Ui::ClienteForm *ui;
-    Cliente cliente;
+    Cliente* cliente;
 };
 
 #endif // CLIENTEFORM_H

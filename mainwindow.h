@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
     
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void borrarCampos();
     ~MainWindow();
 
 private slots:
@@ -40,8 +41,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
-    Cliente cliente;
-    Factura factura;
+    Cliente *cliente;
+    Factura *factura;
+    FacturaCredito facturaCredito;
 };
 
 #endif // MAINWINDOW_H

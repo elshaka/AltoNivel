@@ -18,6 +18,7 @@ class Cliente
 
 public:
     Cliente();
+    Cliente(Cliente* cliente);
     Cliente(QString nombre, QString apellido, QString cedula, QString telefono, QString direccion, int id = 0);
     QString getNombre();
     QString getApellido();

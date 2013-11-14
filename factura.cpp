@@ -24,10 +24,10 @@ Factura::Factura()
     this->id = 0;
 }
 
-Factura::Factura(Cliente &cliente, QDateTime fechaEmision, float monto, QString estado, int numero, int id)
+Factura::Factura(Cliente* cliente, QDateTime fechaEmision, float monto, QString estado, int numero, int id)
 {
     this->tipo = Factura::CONTADO;
-    this->cliente = &cliente;
+    this->cliente = cliente;
     this->fechaEmision = fechaEmision;
     this->monto = monto;
     this->estado = estado;
@@ -40,9 +40,9 @@ void Factura::setTipo(QString tipo)
     this->tipo = tipo;
 }
 
-void Factura::setCliente(Cliente &cliente)
+void Factura::setCliente(Cliente* cliente)
 {
-    this->cliente = &cliente;
+    this->cliente = cliente;
 }
 
 void Factura::setFechaEmision(QDateTime fechaEmision)
@@ -116,7 +116,9 @@ bool Factura::valida()
     if (this->cliente == NULL)
         this->errores.append("No se ha seleccionado un cliente");
     else if (!this->cliente->valido())
+    {
         this->errores.append("El cliente no es valido");
+    }
     if (!this->getFechaEmision().isValid())
         this->errores.append("La fecha de emision no es valida");
     if (!this->monto > 0)
@@ -134,9 +136,9 @@ bool Factura::guardar()
         if (this->getId() == 0)
         {
             qDebug() << "Crear nueva factura";
-            QString fechaVencimiento = this->getFechaVencimiento().isNull() ? "NULL" : this->getFechaVencimiento().toString(DB::formatoFecha);
+            QString fechaVencimiento = this->getFechaVencimiento().isNull() ? "NULL" : QString("'%1'").arg(this->getFechaVencimiento().toString(DB::formatoFecha));
             q = this->db->excecute(QString("INSERT INTO facturas (cliente_id, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado) "
-                                   "values ('%1', '%2', '%3', '%4', '%5', '%6', '%7')")
+                                   "values ('%1', '%2', '%3', %4, '%5', '%6', '%7') RETURNING id")
                                    .arg(QString::number(this->cliente->getId()),
                                         this->getTipo(),
                                         this->getFechaEmision().toString(DB::formatoFecha),
@@ -144,6 +146,8 @@ bool Factura::guardar()
                                         QString::number(this->getMonto()),
                                         QString::number(this->getSaldoPendiente()),
                                         this->getEstado()));
+            q.next();
+            this->id = q.value(0).toInt();
         }
         else
         {
@@ -177,12 +181,12 @@ QList<Factura> Factura::obtenerTodas()
                               "ORDER BY fecha_emision DESC");
     while (q.next())
     {
-        Cliente cliente = Cliente(q.value(1).toString(),
-                                  q.value(2).toString(),
-                                  q.value(3).toString(),
-                                  q.value(4).toString(),
-                                  q.value(5).toString(),
-                                  q.value(0).toInt());
+        Cliente* cliente = new Cliente(q.value(1).toString(),
+                                       q.value(2).toString(),
+                                       q.value(3).toString(),
+                                       q.value(4).toString(),
+                                       q.value(5).toString(),
+                                       q.value(0).toInt());
         if (q.value(8) == Factura::CONTADO)
             facturas << Factura(cliente,
                                 q.value(9).toDateTime(),
@@ -215,7 +219,7 @@ FacturaCredito::FacturaCredito() : Factura()
     this->saldoPendiente = 0;
 }
 
-FacturaCredito::FacturaCredito(Cliente &cliente, QDateTime fechaEmision, QDateTime fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero, int id) :
+FacturaCredito::FacturaCredito(Cliente* cliente, QDateTime fechaEmision, QDateTime fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero, int id) :
     Factura(cliente, fechaEmision, monto, estado, numero, id)
 {
     this->setTipo(Factura::CREDITO);
