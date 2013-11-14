@@ -12,7 +12,7 @@ Cliente::Cliente()
     this->id = 0;
 }
 
-Cliente::Cliente(QString nombre, QString apellido, QString cedula, QString telefono, QString direccion, unsigned int id)
+Cliente::Cliente(QString nombre, QString apellido, QString cedula, QString telefono, QString direccion, int id)
 {
     this->nombre = nombre;
     this->apellido = apellido;
@@ -72,7 +72,7 @@ QString Cliente::getTelefono()
     return this->telefono;
 }
 
-unsigned int Cliente::getId()
+int Cliente::getId()
 {
     return this->id;
 }
@@ -103,11 +103,11 @@ bool Cliente::guardar()
         {
             qDebug() << "Actualizar cliente";
             q = this->db->excecute("UPDATE clientes SET nombre = '" + this->getNombre() + "', " +
-                                                 "apellido = '" + this->getApellido() + "', " +
-                                                   "cedula = '" + this->getCedula() + "', " +
-                                                 "telefono = '" + this->getTelefono() + "', " +
-                                                "direccion = '" + this->getDireccion() + "'" +
-                                                " WHERE id = " + QString::number(this->getId()));
+                                   "apellido = '" + this->getApellido() + "', " +
+                                   "cedula = '" + this->getCedula() + "', " +
+                                   "telefono = '" + this->getTelefono() + "', " +
+                                   "direccion = '" + this->getDireccion() + "'" +
+                                   " WHERE id = " + QString::number(this->getId()));
         }
         return true;
     }

@@ -1,5 +1,7 @@
 #include "db.h"
 
+QString DB::formatoFecha = "yyyy-MM-dd hh:mm:ss";
+
 DB::DB()
 {
     this->addConnection("QPSQL", "alto_nivel", "localhost", "postgres", "ucla", 5432);

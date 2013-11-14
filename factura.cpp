@@ -17,18 +17,18 @@ Factura::Factura()
 {
     this->tipo = Factura::CONTADO;
     this->cliente = NULL;
-    this->fechaEmision = NULL;
+    this->fechaEmision = QDateTime();
     this->monto = 0;
     this->estado = Factura::PORCANCELAR;
     this->numero = 0;
     this->id = 0;
 }
 
-Factura::Factura(Cliente &cliente, QDateTime &fechaEmision, float monto, QString estado, int numero, int id)
+Factura::Factura(Cliente &cliente, QDateTime fechaEmision, float monto, QString estado, int numero, int id)
 {
     this->tipo = Factura::CONTADO;
     this->cliente = &cliente;
-    this->fechaEmision = &fechaEmision;
+    this->fechaEmision = fechaEmision;
     this->monto = monto;
     this->estado = estado;
     this->numero = numero;
@@ -45,9 +45,9 @@ void Factura::setCliente(Cliente &cliente)
     this->cliente = &cliente;
 }
 
-void Factura::setFechaEmision(QDateTime &fechaEmision)
+void Factura::setFechaEmision(QDateTime fechaEmision)
 {
-    this->fechaEmision = &fechaEmision;
+    this->fechaEmision = fechaEmision;
 }
 
 void Factura::setMonto(float monto)
@@ -65,12 +65,22 @@ Cliente* Factura::getCliente()
     return this->cliente;
 }
 
+QString Factura::getTipo()
+{
+    return this->tipo;
+}
+
+int Factura::getId()
+{
+    return this->id;
+}
+
 int Factura::getNumero()
 {
     return this->numero;
 }
 
-QDateTime* Factura::getFechaEmision()
+QDateTime Factura::getFechaEmision()
 {
     return this->fechaEmision;
 }
@@ -107,7 +117,7 @@ bool Factura::valida()
         this->errores.append("No se ha seleccionado un cliente");
     if (!this->cliente->valido())
         this->errores.append("El cliente no es valido");
-    if (!this->getFechaEmision()->isValid())
+    if (!this->getFechaEmision().isValid())
         this->errores.append("La fecha de emision no es valida");
     if (!this->monto > 0)
         this->errores.append("El monto es invalido");
@@ -116,24 +126,103 @@ bool Factura::valida()
     return this->errores.size() == 0;
 }
 
+bool Factura::guardar()
+{
+    QSqlQuery q;
+    if (this->valida())
+    {
+        if (this->getId() == 0)
+        {
+            qDebug() << "Crear nueva factura";
+            QString fechaVencimiento = this->getFechaVencimiento().isNull() ? "NULL" : this->getFechaVencimiento().toString(DB::formatoFecha);
+            q = this->db->excecute("INSERT INTO facturas (cliente_id, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado) values ('" +
+                                   QString::number(this->cliente->getId()) + "','" +
+                                   this->getTipo() + "','" +
+                                   this->getFechaEmision().toString(DB::formatoFecha) + "','" +
+                                   fechaVencimiento + "','" +
+                                   QString::number(this->getMonto()) + "','" +
+                                   QString::number(this->getSaldoPendiente()) + "','" +
+                                   this->getEstado() + "')");
+        }
+        else
+        {
+            qDebug() << "Actualizar factura";
+            q = this->db->excecute("UPDATE clientes SET saldo_pendiente = '" + QString::number(this->getSaldoPendiente()) + "', " +
+                                                                "estado = '" + this->getEstado());
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Factura::eliminar()
+{
+    QSqlQuery q;
+    qDebug() << "Eliminar factura";
+    q = Factura::db->excecute("DELETE FROM facturas WHERE id = " + QString::number(this->getId()));
+    return true;
+}
+
+QList<Factura> Factura::obtenerTodas()
+{
+    QSqlQuery q;
+    QList<Factura> facturas;
+    qDebug() << "Cargar facturas";
+    q = Factura::db->excecute("SELECT clientes.id AS cliente_id, nombre, apellido, cedula, telefono, direccion, "
+                              "id, numero, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado "
+                              "FROM facturas INNER JOIN clientes ON clientes.id = facturas.cliente_id "
+                              "ORDER BY fecha_emision DESC");
+    while (q.next())
+    {
+        Cliente cliente = Cliente(q.value(1).toString(),
+                                  q.value(2).toString(),
+                                  q.value(3).toString(),
+                                  q.value(4).toString(),
+                                  q.value(5).toString(),
+                                  q.value(0).toInt());
+        if (q.value(8) == Factura::CONTADO)
+            facturas << Factura(cliente,
+                                q.value(9).toDateTime(),
+                                q.value(11).toFloat(),
+                                q.value(13).toString(),
+                                q.value(7).toInt(),
+                                q.value(6).toInt());
+        else
+            facturas << FacturaCredito(cliente,
+                                       q.value(9).toDateTime(),
+                                       q.value(10).toDateTime(),
+                                       q.value(11).toFloat(),
+                                       q.value(12).toFloat(),
+                                       q.value(13).toString(),
+                                       q.value(7).toInt(),
+                                       q.value(6).toInt());
+    }
+    return facturas;
+}
+
+Factura::~Factura()
+{
+    delete this->cliente;
+}
+
 FacturaCredito::FacturaCredito() : Factura()
 {
     this->setTipo(Factura::CREDITO);
-    this->fechaVencimiento = new QDateTime();
+    this->fechaVencimiento = QDateTime();
     this->saldoPendiente = 0;
 }
 
-FacturaCredito::FacturaCredito(Cliente &cliente, QDateTime &fechaEmision, QDateTime &fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero, int id) :
+FacturaCredito::FacturaCredito(Cliente &cliente, QDateTime fechaEmision, QDateTime fechaVencimiento, float monto, float saldoPendiente, QString estado, int numero, int id) :
     Factura(cliente, fechaEmision, monto, estado, numero, id)
 {
     this->setTipo(Factura::CREDITO);
-    this->fechaVencimiento = &fechaVencimiento;
+    this->fechaVencimiento = fechaVencimiento;
     this->saldoPendiente = saldoPendiente;
 }
 
-void FacturaCredito::setFechaVencimiento(QDateTime &fechaVencimiento)
+void FacturaCredito::setFechaVencimiento(QDateTime fechaVencimiento)
 {
-    this->fechaVencimiento = &fechaVencimiento;
+    this->fechaVencimiento = fechaVencimiento;
 }
 
 void FacturaCredito::setSaldoPendiente(float saldoPendiente)
@@ -141,7 +230,7 @@ void FacturaCredito::setSaldoPendiente(float saldoPendiente)
     this->saldoPendiente = saldoPendiente;
 }
 
-QDateTime* FacturaCredito::getFechaVencimiento()
+QDateTime FacturaCredito::getFechaVencimiento()
 {
     return this->fechaVencimiento;
 }
