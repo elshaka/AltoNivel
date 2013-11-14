@@ -9,7 +9,7 @@ QList<QString> TablaFacturas::headers = QList<QString>() << "Numero"
                                                          << "Emitida"
                                                          << "Vence";
 
-TablaFacturas::TablaFacturas(QList<Factura *> facturas, QObject *parent) :
+TablaFacturas::TablaFacturas(QList<Factura*> facturas, QObject *parent) :
     QAbstractTableModel(parent)
 {
     this->facturas = facturas;
@@ -61,9 +61,15 @@ Factura* TablaFacturas::factura(int fila)
     return this->facturas.at(fila);
 }
 
-void TablaFacturas::actualizarFacturas(QList<Factura *> facturas)
+void TablaFacturas::actualizarFacturas(QList<Factura*> facturas)
 {
     this->beginResetModel();
     this->facturas = facturas;
     this->endResetModel();
+}
+
+TablaFacturas::~TablaFacturas()
+{
+    QList<Factura*>::Iterator i;
+    qDeleteAll(this->facturas.begin(), this->facturas.end());
 }

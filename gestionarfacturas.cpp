@@ -43,9 +43,8 @@ void GestionarFacturas::on_actionEditarFactura_triggered()
     if (facturaForm.exec() == QDialog::Accepted)
     {
         facturaForm.getFactura()->guardar();
-        this->actualizarTablaFacturas();
     }
-
+    this->actualizarTablaFacturas();
 }
 
 void GestionarFacturas::on_actionAnularFactura_triggered()

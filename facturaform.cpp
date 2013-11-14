@@ -29,8 +29,13 @@ void FacturaForm::actualizarCampos()
     this->ui->dateTimeEditFechaEmision->setDateTime(this->factura->getFechaEmision());
     this->ui->dateTimeEditFechaVencimiento->setDateTime(this->factura->getFechaVencimiento());
     this->ui->lineEditSaldoPendiente->setText(QString::number(this->factura->getSaldoPendiente()));
+    this->ui->lineEditAbono->setText("");
     if(this->factura->getEstado() == Factura::CANCELADA || this->factura->getEstado() == Factura::ANULADA)
+    {
         this->ui->pushButtonCancelar->setEnabled(false);
+        this->ui->pushButtonAbonar->setEnabled(false);
+        this->ui->lineEditAbono->setEnabled(false);
+    }
 }
 
 FacturaForm::~FacturaForm()
@@ -44,7 +49,6 @@ void FacturaForm::on_pushButtonCancelar_clicked()
         this->actualizarCampos();
     else
         QMessageBox::warning(this, "Error", "No se puede cancelar la factura en el estado actual");
-
 }
 
 void FacturaForm::on_pushButtonDescartar_clicked()

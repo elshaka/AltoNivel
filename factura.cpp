@@ -268,7 +268,7 @@ float FacturaCredito::getSaldoPendiente()
 
 bool FacturaCredito::abonar(float abono)
 {
-    if(abono > 0 && (this->saldoPendiente + abono) <= this->getMonto())
+    if(abono > 0 && (abono <= this->saldoPendiente))
     {
         this->saldoPendiente -= abono;
         if (this->saldoPendiente == 0)
@@ -295,7 +295,7 @@ bool FacturaCredito::valida()
         this->errores.append("La fecha de vencimiento no es valida");
     else if(this->getFechaVencimiento() < this->getFechaEmision())
         this->errores.append("La fecha de vencimiento debe ser mayor a la fecha de emision");
-    if(this->getSaldoPendiente() <= 0 || (this->getMonto() - this->getSaldoPendiente()) <= 0)
+    if(this->getSaldoPendiente() > this->getMonto() || this->getSaldoPendiente() < 0)
         this->errores.append("El abono es invalido");
     if(this->getId() != 0 && this->getEstado() == Factura::PORCANCELAR && this->getSaldoPendiente() == 0)
         this->errores.append("La factura no puede tener saldo pendiente 0");
