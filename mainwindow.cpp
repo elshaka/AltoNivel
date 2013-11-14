@@ -10,9 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->on_timer_timeout();
+    this->timer_timeout();
     this->timer = new QTimer(this);
-    this->connect(this->timer, SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
+    this->connect(this->timer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
     this->timer->start(1000);
     this->ui->abonoLabel->setVisible(false);
     this->ui->abonoLineEdit->setVisible(false);
@@ -23,11 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete timer;
 }
 
 void MainWindow::on_actionGestionarClientes_triggered()
 {
-    GestionarClientes* gestionarClientes = new GestionarClientes(&this->db, this);
+    GestionarClientes* gestionarClientes = new GestionarClientes(this);
     gestionarClientes->show();
 }
 
@@ -42,11 +43,15 @@ void MainWindow::on_tipoComboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_seleccionarClientePushButton_clicked()
 {
-    SeleccionarCliente seleccionarCliente;
-    seleccionarCliente.exec();
+    SeleccionarCliente seleccionarCliente(this);
+    if (seleccionarCliente.exec() == QDialog::Accepted)
+    {
+        this->cliente = seleccionarCliente.getCliente();
+        this->ui->clienteLineEdit->setText(this->cliente.getNombre() + " " + this->cliente.getApellido());
+    }
 }
 
-void MainWindow::on_timer_timeout()
+void MainWindow::timer_timeout()
 {
     this->ui->statusBar->showMessage(QTime::currentTime().toString());
 }

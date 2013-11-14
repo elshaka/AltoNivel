@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QTimer>
 #include "cliente.h"
+#include "factura.h"
+#include "tablaclientes.h"
 #include "db.h"
 
 namespace Ui {
@@ -19,7 +21,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    
+
 private slots:
 
 
@@ -29,12 +31,13 @@ private slots:
 
     void on_seleccionarClientePushButton_clicked();
 
-    void on_timer_timeout();
+    void timer_timeout();
 
 private:
     Ui::MainWindow *ui;
-    DB db;
     QTimer *timer;
+    Cliente cliente;
+    Factura factura;
 };
 
 #endif // MAINWINDOW_H

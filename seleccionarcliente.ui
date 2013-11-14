@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>431</width>
+    <width>564</width>
     <height>534</height>
    </rect>
   </property>
@@ -23,7 +23,9 @@
          <string>Nuevo</string>
         </property>
         <property name="icon">
-         <iconset theme="filenew"/>
+         <iconset theme="filenew">
+          <normaloff/>
+         </iconset>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -36,7 +38,9 @@
          <string>Existente</string>
         </property>
         <property name="icon">
-         <iconset theme="find"/>
+         <iconset theme="find">
+          <normaloff/>
+         </iconset>
         </property>
        </widget>
       </item>
@@ -64,7 +68,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="nombreLineEdit"/>
+       <widget class="QLineEdit" name="lineEditNombre"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
@@ -74,7 +78,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="apellidoLineEdit"/>
+       <widget class="QLineEdit" name="lineEditApellido"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
@@ -84,7 +88,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="cedulaLineEdit"/>
+       <widget class="QLineEdit" name="lineEditCedula"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_4">
@@ -94,7 +98,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="lineEditTelefono"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_5">
@@ -104,7 +108,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QPlainTextEdit" name="plainTextEdit"/>
+       <widget class="QPlainTextEdit" name="plainTextEditDireccion"/>
       </item>
      </layout>
     </widget>
@@ -127,7 +131,17 @@
        </layout>
       </item>
       <item>
-       <widget class="QTableView" name="tableView"/>
+       <widget class="QTableView" name="clientesTableView">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -175,12 +189,12 @@
  <tabstops>
   <tabstop>nuevoRadioButton</tabstop>
   <tabstop>existenteRadioButton</tabstop>
-  <tabstop>nombreLineEdit</tabstop>
-  <tabstop>apellidoLineEdit</tabstop>
-  <tabstop>cedulaLineEdit</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>plainTextEdit</tabstop>
-  <tabstop>tableView</tabstop>
+  <tabstop>lineEditNombre</tabstop>
+  <tabstop>lineEditApellido</tabstop>
+  <tabstop>lineEditCedula</tabstop>
+  <tabstop>lineEditTelefono</tabstop>
+  <tabstop>plainTextEditDireccion</tabstop>
+  <tabstop>clientesTableView</tabstop>
   <tabstop>aceptarPushButton</tabstop>
   <tabstop>cancelarPushButton</tabstop>
   <tabstop>filtroLineEdit</tabstop>

@@ -2,6 +2,9 @@
 #define SELECCIONARCLIENTE_H
 
 #include <QDialog>
+#include <QSortFilterProxyModel>
+#include "cliente.h"
+#include "tablaclientes.h"
 
 namespace Ui {
 class SeleccionarCliente;
@@ -13,6 +16,7 @@ class SeleccionarCliente : public QDialog
 
 public:
     explicit SeleccionarCliente(QWidget *parent = 0);
+    Cliente getCliente();
     ~SeleccionarCliente();
 
 private slots:
@@ -24,6 +28,9 @@ private slots:
 
 private:
     Ui::SeleccionarCliente *ui;
+    Cliente cliente;
+    TablaClientes* tablaClientes;
+    QSortFilterProxyModel* tablaFiltradaClientes;
 };
 
 #endif // SELECCIONARCLIENTE_H

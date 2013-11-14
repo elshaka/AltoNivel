@@ -1,5 +1,6 @@
 #include "seleccionarcliente.h"
 #include "ui_seleccionarcliente.h"
+#include <QMessageBox>
 
 SeleccionarCliente::SeleccionarCliente(QWidget *parent) :
     QDialog(parent),
@@ -7,7 +8,18 @@ SeleccionarCliente::SeleccionarCliente(QWidget *parent) :
 {
     ui->setupUi(this);
     this->ui->existenteWidget->setVisible(false);
+    this->tablaClientes = new TablaClientes(Cliente::obtenerTodos());
+    this->tablaFiltradaClientes = new QSortFilterProxyModel(this);
+    this->tablaFiltradaClientes->setSourceModel(this->tablaClientes);
+    this->tablaFiltradaClientes->setFilterKeyColumn(-1);
+    this->tablaFiltradaClientes->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    this->ui->clientesTableView->setModel(this->tablaFiltradaClientes);
+    this->connect(this->ui->filtroLineEdit, SIGNAL(textChanged(QString)), this->tablaFiltradaClientes, SLOT(setFilterRegExp(QString)));
+}
 
+Cliente SeleccionarCliente::getCliente()
+{
+    return this->cliente;
 }
 
 SeleccionarCliente::~SeleccionarCliente()
@@ -17,7 +29,37 @@ SeleccionarCliente::~SeleccionarCliente()
 
 void SeleccionarCliente::on_aceptarPushButton_clicked()
 {
-    this->accept();
+    if(this->ui->nuevoRadioButton->isChecked())
+    {
+        this->cliente.setNombre(this->ui->lineEditNombre->text());
+        this->cliente.setApellido(this->ui->lineEditApellido->text());
+        this->cliente.setCedula(this->ui->lineEditCedula->text());
+        this->cliente.setTelefono(this->ui->lineEditTelefono->text());
+        this->cliente.setDireccion(this->ui->plainTextEditDireccion->toPlainText());
+        if (this->cliente.valido())
+            this->accept();
+        else
+        {
+            QString mensaje = "";
+            QList<QString>::Iterator i;
+            QList<QString> errores = this->cliente.errores;
+            for(i = errores.begin(); i != errores.end(); ++i)
+                mensaje.append(QString("- %1\n").arg(*i));
+            QMessageBox::warning(this, "Atributos invalidos", mensaje);
+        }
+    }
+    else
+    {
+        QModelIndex filaFiltrada = this->ui->clientesTableView->currentIndex();
+        int fila = this->tablaFiltradaClientes->mapToSource(filaFiltrada).row();
+        if(fila >= 0)
+        {
+            this->cliente = this->tablaClientes->cliente(fila);
+            this->accept();
+        }
+        else
+            QMessageBox::warning(this, "Error", "Debe seleccionar un cliente");
+    }
 }
 
 void SeleccionarCliente::on_cancelarPushButton_clicked()
