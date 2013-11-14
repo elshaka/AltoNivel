@@ -30,7 +30,7 @@ private slots:
 
     void on_actionVer_facturas_en_sistema_triggered();
 
-    void on_tipoComboBox_currentIndexChanged(const QString &arg1);
+    void on_tipoComboBox_currentIndexChanged(int index);
 
     void on_seleccionarClientePushButton_clicked();
 

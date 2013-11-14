@@ -52,9 +52,9 @@ void MainWindow::on_actionVer_facturas_en_sistema_triggered()
     gestionarFacturas->show();
 }
 
-void MainWindow::on_tipoComboBox_currentIndexChanged(const QString &arg1)
+void MainWindow::on_tipoComboBox_currentIndexChanged(int index)
 {
-    bool visible = arg1 == "Crédito";
+    bool visible = this->ui->tipoComboBox->itemData(index).toString() == Factura::CREDITO;
     this->ui->abonoLabel->setVisible(visible);
     this->ui->abonoLineEdit->setVisible(visible);
     this->ui->venceLabel->setVisible(visible);
