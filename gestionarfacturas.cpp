@@ -1,9 +1,6 @@
-#ifndef GESTIONARFACTURAS_CPP
-#define GESTIONARFACTURAS_CPP
-
 #include "gestionarfacturas.h"
 #include "ui_gestionarfacturas.h"
-#include "clienteform.h"
+#include "facturaform.h"
 #include <QMessageBox>
 
 GestionarFacturas::GestionarFacturas(QWidget *parent) :
@@ -21,56 +18,52 @@ GestionarFacturas::~GestionarFacturas()
     delete ui;
 }
 
-void GestionarFacturas::habilitarEditarEliminar(bool habilitar)
+void GestionarFacturas::habilitarEditarAnular(bool habilitar)
 {
     this->ui->actionEditarFactura->setEnabled(habilitar);
-    this->ui->actionEliminarFactura->setEnabled(habilitar);
+    this->ui->actionAnularFactura->setEnabled(habilitar);
 }
 
 void GestionarFacturas::actualizarTablaFacturas()
 {
     this->tablaFacturas->actualizarFacturas(Factura::obtenerTodas());
-    this->habilitarEditarEliminar(false);
+    this->habilitarEditarAnular(false);
 }
 
 void GestionarFacturas::on_facturasTableWidget_clicked()
 {
-    this->habilitarEditarEliminar(true);
-}
-/*
-void GestionarFacturas::on_actionEditarFactura_triggered()
-{
-    int fila = this->ui->facturasTableWidget->currentIndex().row();
-    ClienteForm clienteForm(this, this->tablaClientes->cliente(fila));
-    if (clienteForm.exec() == QDialog::Accepted)
-    {
-        clienteForm.getCliente().guardar();
-        this->actualizarTablaFacturas();
-    }
+    this->habilitarEditarAnular(true);
 }
 
-void GestionarFacturas::on_actionEliminarFactura_triggered()
+void GestionarFacturas::on_actionEditarFactura_triggered()
 {
     int fila = this->ui->facturasTableWidget->currentIndex().row();
     Factura factura = this->tablaFacturas->factura(fila);
-    if (QMessageBox::question(this, "Eliminar factura", "¿Esta seguro de querer eliminar la factura "+factura.getNumero()+"?")
-            == QMessageBox::Yes)
+    FacturaForm facturaForm(factura, this);
+    if (facturaForm.exec() == QDialog::Accepted)
     {
-        if (factura.eliminar())
-            this->actualizarTablaFacturas();
-        else
-            QMessageBox::warning(this, "No se puede eliminar el cliente", "El cliente no se puede eliminar porque tiene facturas asociadas");
+        facturaForm.getFactura().guardar();
+        this->actualizarTablaFacturas();
     }
-}
-*/
-#endif // GESTIONARFACTURAS_CPP
-
-void GestionarFacturas::on_actionEditarFactura_triggered()
-{
 
 }
 
-void GestionarFacturas::on_actionEliminarFactura_triggered()
+void GestionarFacturas::on_actionAnularFactura_triggered()
 {
-
+    int fila = this->ui->facturasTableWidget->currentIndex().row();
+    Factura factura = this->tablaFacturas->factura(fila);
+    if (factura.getEstado() != Factura::ANULADA)
+    {
+        if (QMessageBox::question(this, "Anular factura", QString("¿Esta seguro de querer anular la factura N° %1?").arg(factura.getNumero()))
+                == QMessageBox::Yes)
+        {
+            factura.anular();
+            factura.guardar();
+            this->actualizarTablaFacturas();
+        }
+    }
+    else
+    {
+        QMessageBox::information(this, "Anular factura", "La factura ya esta anulada");
+    }
 }

@@ -1,6 +1,6 @@
 #include "db.h"
 
-QString DB::formatoFecha = "yyyy-MM-dd hh:mm:ss";
+QString DB::FORMATOFECHA = "yyyy-MM-dd hh:mm:ss";
 
 DB::DB()
 {

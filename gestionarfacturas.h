@@ -18,7 +18,7 @@ class GestionarFacturas : public QMainWindow
 public:
     explicit GestionarFacturas (QWidget *parent = 0);
     void actualizarTablaFacturas();
-    void habilitarEditarEliminar(bool habilitar);
+    void habilitarEditarAnular(bool habilitar);
     ~GestionarFacturas();
 
 private slots:
@@ -26,7 +26,7 @@ private slots:
 
     void on_actionEditarFactura_triggered();
 
-    void on_actionEliminarFactura_triggered();
+    void on_actionAnularFactura_triggered();
 
 private:
     Ui::GestionarFacturas *ui;

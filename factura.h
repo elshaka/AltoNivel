@@ -37,9 +37,9 @@ public:
     float getMonto();
     QString getEstado();
     virtual float getSaldoPendiente() { return 0; }
-    bool cancelar();
+    virtual bool cancelar();
     void anular();
-    virtual bool abonar() { return false;}
+    virtual bool abonar(float /*abono*/) { return false;}
     virtual bool valida();
     virtual ~Factura();
     QList<QString> errores;
@@ -55,6 +55,7 @@ public:
     static QString CONTADO;
     static QString CREDITO;
     static QList<QString> TIPOS;
+    static QString FORMATOFECHA;
 };
 
 class FacturaCredito : public Factura
@@ -69,6 +70,7 @@ public:
     QDateTime getFechaVencimiento();
     float getSaldoPendiente();
     bool abonar(float abono);
+    bool cancelar();
     bool valida();
 };
 

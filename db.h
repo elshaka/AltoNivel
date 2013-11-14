@@ -22,7 +22,7 @@ private:
 public:
     DB();
     QSqlQuery excecute(QString sql);
-    static QString formatoFecha;
+    static QString FORMATOFECHA;
 };
 
 #endif // DB_H

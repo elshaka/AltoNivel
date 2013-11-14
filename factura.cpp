@@ -1,11 +1,14 @@
 #include "factura.h"
 
+QString Factura::FORMATOFECHA = "d 'de' MMMM 'de' yyyy. hh:mm:ss";
+
 QString Factura::PORCANCELAR = "PORCANCELAR";
 QString Factura::CANCELADA = "CANCELADA";
 QString Factura::ANULADA = "ANULADA";
 QList<QString> Factura::ESTADOS = QList<QString>() << Factura::PORCANCELAR
                                                    << Factura::CANCELADA
                                                    << Factura::ANULADA;
+
 QString Factura::CONTADO = "CONTADO";
 QString Factura::CREDITO = "CREDITO";
 QList<QString> Factura::TIPOS = QList<QString>() << Factura::CONTADO
@@ -115,9 +118,15 @@ bool Factura::valida()
     this->errores.clear();
     if (this->cliente == NULL)
         this->errores.append("No se ha seleccionado un cliente");
-    else if (!this->cliente->valido())
+    else
     {
-        this->errores.append("El cliente no es valido");
+        QSqlQuery q;
+        qDebug() << "Verificando existencia del cliente";
+        q = this->db->excecute(QString("SELECT COUNT(*) FROM clientes WHERE id = %1")
+                               .arg(this->cliente->getId()));
+        q.next();
+        if (q.value(0).toInt() != 1)
+            this->errores.append("El cliente no es valido");
     }
     if (!this->getFechaEmision().isValid())
         this->errores.append("La fecha de emision no es valida");
@@ -136,12 +145,12 @@ bool Factura::guardar()
         if (this->getId() == 0)
         {
             qDebug() << "Crear nueva factura";
-            QString fechaVencimiento = this->getFechaVencimiento().isNull() ? "NULL" : QString("'%1'").arg(this->getFechaVencimiento().toString(DB::formatoFecha));
+            QString fechaVencimiento = this->getFechaVencimiento().isNull() ? "NULL" : QString("'%1'").arg(this->getFechaVencimiento().toString(DB::FORMATOFECHA));
             q = this->db->excecute(QString("INSERT INTO facturas (cliente_id, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado) "
                                    "values ('%1', '%2', '%3', %4, '%5', '%6', '%7') RETURNING id")
                                    .arg(QString::number(this->cliente->getId()),
                                         this->getTipo(),
-                                        this->getFechaEmision().toString(DB::formatoFecha),
+                                        this->getFechaEmision().toString(DB::FORMATOFECHA),
                                         fechaVencimiento,
                                         QString::number(this->getMonto()),
                                         QString::number(this->getSaldoPendiente()),
@@ -152,7 +161,7 @@ bool Factura::guardar()
         else
         {
             qDebug() << "Actualizar factura";
-            q = this->db->excecute(QString("UPDATE clientes SET saldo_pendiente = %1, estado ='%2' WHERE id = %3")
+            q = this->db->excecute(QString("UPDATE facturas SET saldo_pendiente = %1, estado = '%2' WHERE id = %3")
                                    .arg(QString::number(this->getSaldoPendiente()),
                                         this->getEstado(),
                                         QString::number(this->getId())));
@@ -259,6 +268,16 @@ bool FacturaCredito::abonar(float abono)
     return false;
 }
 
+bool FacturaCredito::cancelar()
+{
+    if (this->getEstado() != Factura::ANULADA && this->getSaldoPendiente() == 0)
+    {
+        this->setEstado(Factura::CANCELADA);
+        return true;
+    }
+    return false;
+}
+
 bool FacturaCredito::valida()
 {
     Factura::valida();
@@ -266,8 +285,8 @@ bool FacturaCredito::valida()
         this->errores.append("La fecha de vencimiento no es valida");
     else if(this->getFechaVencimiento() < this->getFechaEmision())
         this->errores.append("La fecha de vencimiento debe ser mayor a la fecha de emision");
-    if(this->getSaldoPendiente() < 0)
-        this->errores.append("El saldo pendiente es invalido");
+    if(this->getSaldoPendiente() <= 0 || (this->getMonto() - this->getSaldoPendiente()) <= 0)
+        this->errores.append("El abono es invalido");
     if(this->getId() != 0 && this->getEstado() == Factura::PORCANCELAR && this->getSaldoPendiente() == 0)
         this->errores.append("La factura no puede tener saldo pendiente 0");
     return this->errores.size() == 0;

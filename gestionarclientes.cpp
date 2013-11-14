@@ -75,7 +75,8 @@ void GestionarClientes::on_actionEliminar_triggered()
 {
     int fila = this->ui->clientesTableWidget->currentIndex().row();
     Cliente* cliente = this->tablaClientes->cliente(fila);
-    if (QMessageBox::question(this, "Eliminar cliente", "¿Esta seguro de querer eliminar al cliente "+cliente->getNombre()+"?")
+    if (QMessageBox::question(this, "Eliminar cliente", QString("¿Esta seguro de querer eliminar al cliente %1 %2?").arg(cliente->getNombre(),
+                                                                                                                         cliente->getApellido()))
             == QMessageBox::Yes)
     {
         if (cliente->eliminar())
