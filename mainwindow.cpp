@@ -102,6 +102,7 @@ void MainWindow::on_crearFacturaPushButton_clicked()
             QMessageBox::warning(this, "Atributos invalidos", mensaje);
         }
         delete this->factura;
+        delete this->cliente;
         this->cliente = NULL;
         this->borrarCampos();
     }
