@@ -27,4 +27,5 @@ HEADERS += mainwindow.h \
 FORMS += mainwindow.ui \
     clienteform.ui \
     gestionarclientes.ui \
-    seleccionarcliente.ui
+    seleccionarcliente.ui \
+    gestionarfacturas.ui
