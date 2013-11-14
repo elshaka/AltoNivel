@@ -16,10 +16,12 @@ class Factura
 
     static DB* db;
 
+protected:
+    void setTipo(QString tipo);
+
 public:
     Factura();
     Factura(Cliente &cliente, QDateTime fechaEmision, float monto, QString estado, int numero = 0, int id = 0);
-    void setTipo(QString tipo);
     void setCliente(Cliente &cliente);
     void setFechaEmision(QDateTime fechaEmision);
     virtual void setFechaVencimiento(QDateTime /*fechaVencimiento*/) {}
