@@ -2,6 +2,7 @@
 #define GESTIONARFACTURAS_H
 
 #include <QMainWindow>
+#include <QSortFilterProxyModel>
 #include "db.h"
 #include "factura.h"
 #include "tablafacturas.h"
@@ -28,10 +29,19 @@ private slots:
 
     void on_actionAnularFactura_triggered();
 
+    void on_radioButtonPorCancelar_clicked();
+
+    void on_radioButtonCanceladas_clicked();
+
+    void on_radioButtonAnuladas_clicked();
+
+    void on_radioButtonTodas_clicked();
+
 private:
     Ui::GestionarFacturas *ui;
     DB *db;
     TablaFacturas *tablaFacturas;
+    QSortFilterProxyModel* tablaFiltradaFacturas;
 };
 
 #endif // GESTIONARFACTURAS_H

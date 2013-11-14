@@ -10,7 +10,12 @@ GestionarFacturas::GestionarFacturas(QWidget *parent) :
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->tablaFacturas = new TablaFacturas(Factura::obtenerTodas());
-    this->ui->facturasTableWidget->setModel(this->tablaFacturas);
+    this->tablaFiltradaFacturas = new QSortFilterProxyModel(this);
+    this->tablaFiltradaFacturas->setSourceModel(this->tablaFacturas);
+    this->tablaFiltradaFacturas->setFilterKeyColumn(3);
+    this->ui->facturasTableWidget->setModel(this->tablaFiltradaFacturas);
+    this->tablaFiltradaFacturas->setFilterRegExp(Factura::PORCANCELAR);
+    this->ui->facturasTableWidget->setColumnWidth(3, 150);
     this->ui->facturasTableWidget->setColumnWidth(6, 280);
 }
 
@@ -38,7 +43,8 @@ void GestionarFacturas::on_facturasTableWidget_clicked()
 
 void GestionarFacturas::on_actionEditarFactura_triggered()
 {
-    int fila = this->ui->facturasTableWidget->currentIndex().row();
+    QModelIndex filaFiltrada = this->ui->facturasTableWidget->currentIndex();
+    int fila = this->tablaFiltradaFacturas->mapToSource(filaFiltrada).row();
     Factura* factura = this->tablaFacturas->factura(fila);
     FacturaForm facturaForm(factura, this);
     if (facturaForm.exec() == QDialog::Accepted)
@@ -50,7 +56,8 @@ void GestionarFacturas::on_actionEditarFactura_triggered()
 
 void GestionarFacturas::on_actionAnularFactura_triggered()
 {
-    int fila = this->ui->facturasTableWidget->currentIndex().row();
+    QModelIndex filaFiltrada = this->ui->facturasTableWidget->currentIndex();
+    int fila = this->tablaFiltradaFacturas->mapToSource(filaFiltrada).row();
     Factura* factura = this->tablaFacturas->factura(fila);
     if (factura->getEstado() != Factura::ANULADA)
     {
@@ -66,4 +73,24 @@ void GestionarFacturas::on_actionAnularFactura_triggered()
     {
         QMessageBox::information(this, "Anular factura", "La factura ya esta anulada");
     }
+}
+
+void GestionarFacturas::on_radioButtonPorCancelar_clicked()
+{
+    this->tablaFiltradaFacturas->setFilterRegExp(Factura::PORCANCELAR);
+}
+
+void GestionarFacturas::on_radioButtonCanceladas_clicked()
+{
+    this->tablaFiltradaFacturas->setFilterRegExp(Factura::CANCELADA);
+}
+
+void GestionarFacturas::on_radioButtonAnuladas_clicked()
+{
+    this->tablaFiltradaFacturas->setFilterRegExp(Factura::ANULADA);
+}
+
+void GestionarFacturas::on_radioButtonTodas_clicked()
+{
+    this->tablaFiltradaFacturas->setFilterRegExp(QString(""));
 }
