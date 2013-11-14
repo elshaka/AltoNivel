@@ -19,7 +19,8 @@ public:
     ~ClienteForm();
 
 private slots:
-    void on_buttonBox_accepted();
+
+    void on_pushButtonAceptar_clicked();
 
 private:
     Ui::ClienteForm *ui;

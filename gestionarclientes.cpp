@@ -2,6 +2,7 @@
 #include "ui_gestionarclientes.h"
 #include "clienteform.h"
 #include <QMessageBox>
+#include <QDebug>
 
 GestionarClientes::GestionarClientes(QWidget *parent) :
     QMainWindow(parent),

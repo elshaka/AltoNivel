@@ -26,7 +26,7 @@ ClienteForm::~ClienteForm()
     delete ui;
 }
 
-void ClienteForm::on_buttonBox_accepted()
+void ClienteForm::on_pushButtonAceptar_clicked()
 {
     this->cliente.setNombre(this->ui->lineEditNombre->text());
     this->cliente.setApellido(this->ui->lineEditApellido->text());

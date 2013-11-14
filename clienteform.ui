@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -26,18 +29,15 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="lineEditNombre"/>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEditApellido"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEditCedula"/>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Apellido</string>
        </property>
       </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEditApellido"/>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
@@ -46,8 +46,8 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEditTelefono"/>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEditCedula"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
@@ -55,6 +55,9 @@
         <string>Telefono</string>
        </property>
       </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEditTelefono"/>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_5">
@@ -69,53 +72,57 @@
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCancelar">
+       <property name="text">
+        <string>Cancelar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonAceptar">
+       <property name="text">
+        <string>Aceptar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>ClienteForm</receiver>
-   <slot>on_buttonBox_accepted()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>227</x>
-     <y>211</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>83</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
+   <sender>pushButtonCancelar</sender>
+   <signal>clicked()</signal>
    <receiver>ClienteForm</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>295</x>
-     <y>211</y>
+     <x>256</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>167</y>
+     <x>199</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>on_buttonBox_accepted()</slot>
  </slots>
 </ui>

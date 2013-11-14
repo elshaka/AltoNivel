@@ -49,27 +49,27 @@ void Cliente::setTelefono(QString telefono)
 
 QString Cliente::getNombre()
 {
-    return this->nombre;
+    return this->nombre.trimmed();
 }
 
 QString Cliente::getApellido()
 {
-    return this->apellido;
+    return this->apellido.trimmed();
 }
 
 QString Cliente::getCedula()
 {
-    return this->cedula;
+    return this->cedula.trimmed();
 }
 
 QString Cliente::getDireccion()
 {
-    return this->direccion;
+    return this->direccion.trimmed();
 }
 
 QString Cliente::getTelefono()
 {
-    return this->telefono;
+    return this->telefono.trimmed();
 }
 
 int Cliente::getId()
@@ -79,8 +79,39 @@ int Cliente::getId()
 
 bool Cliente::valido()
 {
+    QSqlQuery q;
     this->errores.clear();
-    // Agregar validaciones
+    if (this->getNombre() == "")
+        this->errores.append("El nombre no puede estar en blanco");
+    if (this->getApellido() == "")
+        this->errores.append("El apellido no puede estar en blanco");
+    if (this->getCedula() == "")
+        this->errores.append("La cedula no puede estar en blanco");
+    if (this->getTelefono() == "")
+        this->errores.append("El telefono no puede estar en blanco");
+    if (this->getDireccion() == "")
+        this->errores.append("La direccion no puede estar en blanco");
+    if (this->getNombre() != "" && this->getApellido() != "")
+    {
+        qDebug() << "Verificando existencia de Nombre y Apellido";
+        q = this->db->excecute(QString("SELECT COUNT(*) FROM clientes WHERE LOWER(nombre) = LOWER('%1') AND LOWER(apellido) = LOWER('%2') AND id != %3")
+                               .arg(this->getNombre(),
+                                    this->getApellido(),
+                                    QString::number(this->getId())));
+        q.next();
+        if (q.value(0).toInt() > 0)
+            this->errores.append("Ya existe un cliente con el mismo nombre y apellido");
+    }
+    if (this->getCedula() != "")
+    {
+        qDebug() << "Verificando existencia de cedula";
+        q = this->db->excecute(QString("SELECT COUNT(*) FROM clientes WHERE cedula = '%1' AND id != %2")
+                               .arg(this->getCedula(),
+                                    QString::number(this->getId())));
+        q.next();
+        if (q.value(0).toInt() > 0)
+            this->errores.append("Ya existe un cliente con la misma cedula");
+    }
     return this->errores.size() == 0;
 }
 
