@@ -1,6 +1,7 @@
 #ifndef TABLACLIENTES_H
 #define TABLACLIENTES_H
 #include "cliente.h"
+#include <QSize>
 
 class TablaClientes : public QAbstractTableModel
 {

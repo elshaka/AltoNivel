@@ -123,22 +123,23 @@ bool Cliente::guardar()
         if (this->getId() == 0)
         {
             qDebug() << "Crear nuevo cliente";
-            q = this->db->excecute("INSERT INTO clientes (nombre, apellido, cedula, telefono, direccion) values ('" +
-                                this->getNombre() + "','" +
-                                this->getApellido() + "','" +
-                                this->getCedula() + "','" +
-                                this->getTelefono() + "','" +
-                                this->getDireccion() + "')");
+            q = this->db->excecute(QString("INSERT INTO clientes (nombre, apellido, cedula, telefono, direccion) values ('%1', '%2', '%3', '%4', '%5')")
+                                   .arg(this->getNombre(),
+                                        this->getApellido(),
+                                        this->getCedula(),
+                                        this->getTelefono(),
+                                        this->getDireccion()));
         }
         else
         {
             qDebug() << "Actualizar cliente";
-            q = this->db->excecute("UPDATE clientes SET nombre = '" + this->getNombre() + "', " +
-                                   "apellido = '" + this->getApellido() + "', " +
-                                   "cedula = '" + this->getCedula() + "', " +
-                                   "telefono = '" + this->getTelefono() + "', " +
-                                   "direccion = '" + this->getDireccion() + "'" +
-                                   " WHERE id = " + QString::number(this->getId()));
+            q = this->db->excecute(QString("UPDATE clientes SET nombre = '%1', apellido = '%2', cedula = '%3', telefono = '%4', direccion = '%5' WHERE id = %6")
+                                   .arg(this->getNombre(),
+                                        this->getApellido(),
+                                        this->getCedula(),
+                                        this->getTelefono(),
+                                        this->getDireccion(),
+                                        QString::number(this->getId())));
         }
         return true;
     }
@@ -150,11 +151,13 @@ bool Cliente::eliminar()
     QSqlQuery q;
     bool eliminado = false;
     qDebug() << "Eliminar cliente";
-    q = Cliente::db->excecute("SELECT COUNT(*) FROM facturas WHERE cliente_id = " + QString::number(this->getId()));
+    q = Cliente::db->excecute(QString("SELECT COUNT(*) FROM facturas WHERE cliente_id = %1")
+                              .arg(QString::number(this->getId())));
     q.next();
     if (q.value(0).toInt() == 0)
     {
-        q = Cliente::db->excecute("DELETE FROM clientes WHERE id = " + QString::number(this->getId()));
+        q = Cliente::db->excecute(QString("DELETE FROM clientes WHERE id = %1")
+                                  .arg(QString::number(this->getId())));
         eliminado = true;
     }
     else

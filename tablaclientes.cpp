@@ -1,7 +1,6 @@
 #include "tablaclientes.h"
 
-QList<QString> TablaClientes::headers = QList<QString>() << "Nombre"
-                                                         << "Apellido"
+QList<QString> TablaClientes::headers = QList<QString>() << "Nombre y Apellido"
                                                          << "Cedula"
                                                          << "Telefono"
                                                          << "Direccion";
@@ -39,11 +38,10 @@ QVariant TablaClientes::data(const QModelIndex &index, int role) const
     {
         switch(index.column())
         {
-            case 0: return cliente.getNombre();
-            case 1: return cliente.getApellido();
-            case 2: return cliente.getCedula();
-            case 3: return cliente.getTelefono();
-            case 4: return cliente.getDireccion();
+        case 0: return QString("%1 %2").arg(cliente.getNombre(), cliente.getApellido());
+        case 1: return cliente.getCedula();
+        case 2: return cliente.getTelefono();
+        case 3: return cliente.getDireccion();
         }
     }
     return QVariant();
