@@ -64,3 +64,8 @@ void MainWindow::timer_timeout()
 {
     this->ui->statusBar->showMessage(QDateTime::currentDateTime().toString("dddd, d 'de' MMMM 'de' yyyy. hh:mm:ss"));
 }
+
+void MainWindow::on_crearFacturaPushButton_clicked()
+{
+
+}
