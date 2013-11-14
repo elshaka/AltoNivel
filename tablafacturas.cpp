@@ -64,12 +64,12 @@ Factura* TablaFacturas::factura(int fila)
 void TablaFacturas::actualizarFacturas(QList<Factura*> facturas)
 {
     this->beginResetModel();
+    qDeleteAll(this->facturas.begin(), this->facturas.end());
     this->facturas = facturas;
     this->endResetModel();
 }
 
 TablaFacturas::~TablaFacturas()
 {
-    QList<Factura*>::Iterator i;
     qDeleteAll(this->facturas.begin(), this->facturas.end());
 }
