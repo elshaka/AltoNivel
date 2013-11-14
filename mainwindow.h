@@ -27,11 +27,15 @@ private slots:
 
     void on_actionGestionarClientes_triggered();
 
+    void on_actionVer_facturas_en_sistema_triggered();
+
     void on_tipoComboBox_currentIndexChanged(const QString &arg1);
 
     void on_seleccionarClientePushButton_clicked();
 
     void timer_timeout();
+
+    void on_crearFacturaPushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
