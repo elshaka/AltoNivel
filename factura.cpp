@@ -115,7 +115,7 @@ bool Factura::valida()
     this->errores.clear();
     if (this->cliente == NULL)
         this->errores.append("No se ha seleccionado un cliente");
-    if (!this->cliente->valido())
+    else if (!this->cliente->valido())
         this->errores.append("El cliente no es valido");
     if (!this->getFechaEmision().isValid())
         this->errores.append("La fecha de emision no es valida");
@@ -255,6 +255,13 @@ bool FacturaCredito::abonar(float abono)
 bool FacturaCredito::valida()
 {
     Factura::valida();
-    // Validaciones de factura a credito
+    if(!this->getFechaVencimiento().isValid())
+        this->errores.append("La fecha de vencimiento no es valida");
+    else if(this->getFechaVencimiento() < this->getFechaEmision())
+        this->errores.append("La fecha de vencimiento debe ser mayor a la fecha de emision");
+    if(this->getSaldoPendiente() < 0)
+        this->errores.append("El saldo pendiente es invalido");
+    if(this->getId() != 0 && this->getEstado() == Factura::PORCANCELAR && this->getSaldoPendiente() == 0)
+        this->errores.append("La factura no puede tener saldo pendiente 0");
     return this->errores.size() == 0;
 }
