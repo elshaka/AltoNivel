@@ -171,8 +171,8 @@ QList<Factura> Factura::obtenerTodas()
     QSqlQuery q;
     QList<Factura> facturas;
     qDebug() << "Cargar facturas";
-    q = Factura::db->excecute("SELECT clientes.id AS cliente_id, nombre, apellido, cedula, telefono, direccion, "
-                              "id, numero, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado "
+    q = Factura::db->excecute("SELECT clientes.id, nombre, apellido, cedula, telefono, direccion, "
+                              "facturas.id, numero, tipo, fecha_emision, fecha_vencimiento, monto, saldo_pendiente, estado "
                               "FROM facturas INNER JOIN clientes ON clientes.id = facturas.cliente_id "
                               "ORDER BY fecha_emision DESC");
     while (q.next())
