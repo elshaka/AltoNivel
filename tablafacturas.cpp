@@ -1,4 +1,6 @@
 #include "tablafacturas.h"
+#include <QColor>
+#include <QBrush>
 
 QList<QString> TablaFacturas::headers = QList<QString>() << "Numero"
                                                          << "Cliente"
@@ -52,6 +54,17 @@ QVariant TablaFacturas::data(const QModelIndex &index, int role) const
         case 6: return factura->getFechaEmision().toString(Factura::FORMATOFECHA);
         case 7: return factura->getFechaVencimiento().toString(Factura::FORMATOFECHA);
         }
+    }
+    else if (role == Qt::BackgroundRole && index.column() == 3)
+    {
+        int row = index.row();
+        QString estado = this->facturas.at(row)->getEstado();
+        if (estado == Factura::CANCELADA)
+            return QBrush(QColor(122, 195, 106));
+        if (estado == Factura::PORCANCELAR)
+            return QBrush(QColor(250, 167, 91));
+        if (estado == Factura::ANULADA)
+            return QBrush(QColor(241, 90, 96));
     }
     return QVariant();
 }

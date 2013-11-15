@@ -78,19 +78,23 @@ void GestionarFacturas::on_actionAnularFactura_triggered()
 void GestionarFacturas::on_radioButtonPorCancelar_clicked()
 {
     this->tablaFiltradaFacturas->setFilterRegExp(Factura::PORCANCELAR);
+    this->habilitarEditarAnular(false);
 }
 
 void GestionarFacturas::on_radioButtonCanceladas_clicked()
 {
     this->tablaFiltradaFacturas->setFilterRegExp(Factura::CANCELADA);
+    this->habilitarEditarAnular(false);
 }
 
 void GestionarFacturas::on_radioButtonAnuladas_clicked()
 {
     this->tablaFiltradaFacturas->setFilterRegExp(Factura::ANULADA);
+    this->habilitarEditarAnular(false);
 }
 
 void GestionarFacturas::on_radioButtonTodas_clicked()
 {
     this->tablaFiltradaFacturas->setFilterRegExp(QString(""));
+    this->habilitarEditarAnular(false);
 }
