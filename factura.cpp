@@ -228,7 +228,7 @@ QList<Factura *> Factura::obtenerTodas()
 
 Factura::~Factura()
 {
-    //delete this->cliente;
+    delete this->cliente;
 }
 
 FacturaCredito::FacturaCredito() : Factura()

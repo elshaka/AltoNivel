@@ -38,6 +38,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete timer;
+    delete this->cliente;
 }
 
 void MainWindow::on_actionGestionarClientes_triggered()
@@ -103,8 +104,6 @@ void MainWindow::on_crearFacturaPushButton_clicked()
     {
         QMessageBox::information(this, "Factura creada", "La factura fue creada exitosamente en el sistema");
         this->borrarCampos();
-        delete this->cliente;
-        this->cliente = NULL;
     }
     else
     {
@@ -115,5 +114,6 @@ void MainWindow::on_crearFacturaPushButton_clicked()
             mensaje.append(QString("- %1\n").arg(*i));
         QMessageBox::warning(this, "Atributos invalidos", mensaje);
     }
+    this->factura->setCliente(NULL);
     delete this->factura;
 }
