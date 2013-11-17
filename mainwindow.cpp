@@ -37,7 +37,6 @@ void MainWindow::borrarCampos()
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete timer;
     delete this->cliente;
 }
 
