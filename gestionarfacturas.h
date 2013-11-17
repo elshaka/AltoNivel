@@ -37,6 +37,8 @@ private slots:
 
     void on_radioButtonTodas_clicked();
 
+    void on_radioButtonPorCancelar_toggled(bool /*checked*/);
+
 private:
     Ui::GestionarFacturas *ui;
     DB *db;
