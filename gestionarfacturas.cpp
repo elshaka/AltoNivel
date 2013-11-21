@@ -9,7 +9,7 @@ GestionarFacturas::GestionarFacturas(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
-    this->tablaFacturas = new TablaFacturas(Factura::obtenerTodas());
+    this->tablaFacturas = new TablaFacturas(Factura::obtenerTodas(), this);
     this->tablaFiltradaFacturas = new QSortFilterProxyModel(this);
     this->tablaFiltradaFacturas->setSourceModel(this->tablaFacturas);
     this->tablaFiltradaFacturas->setFilterKeyColumn(3);

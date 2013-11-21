@@ -9,7 +9,7 @@ SeleccionarCliente::SeleccionarCliente(QWidget *parent) :
     ui->setupUi(this);
     this->cliente = new Cliente();
     this->ui->existenteWidget->setVisible(false);
-    this->tablaClientes = new TablaClientes(Cliente::obtenerTodos());
+    this->tablaClientes = new TablaClientes(Cliente::obtenerTodos(), this);
     this->tablaFiltradaClientes = new QSortFilterProxyModel(this);
     this->tablaFiltradaClientes->setSourceModel(this->tablaClientes);
     this->tablaFiltradaClientes->setFilterKeyColumn(-1);

@@ -10,7 +10,7 @@ GestionarClientes::GestionarClientes(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
-    this->tablaClientes = new TablaClientes(Cliente::obtenerTodos());
+    this->tablaClientes = new TablaClientes(Cliente::obtenerTodos(), this);
     this->tablaFiltradaClientes = new QSortFilterProxyModel(this);
     this->tablaFiltradaClientes->setSourceModel(this->tablaClientes);
     this->tablaFiltradaClientes->setFilterKeyColumn(-1);
